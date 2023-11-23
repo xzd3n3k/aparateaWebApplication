@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from "react";
+import React, { ReactElement, useEffect } from "react";
 import './Navbar.scss';
 import logo from '../../images/logos/logo.png'
 
@@ -54,7 +54,7 @@ export default function Navbar(): ReactElement {
                         <a href="/about">O NÁS</a>
                     </li>
                     <li>
-                        <a href="/e-shops">NAŠE E-SHOPY</a>
+                        <a href="/eshops">NAŠE E-SHOPY</a>
                     </li>
                     <li>
                         <a href="/career">VOLNÁ MÍSTA</a>
