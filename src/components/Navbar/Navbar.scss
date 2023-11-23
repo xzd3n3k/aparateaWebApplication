@@ -5,7 +5,7 @@
 }
 
 .siteLogo {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.7);
   padding: 1rem;
   transition: 300ms;
 
@@ -48,7 +48,7 @@ nav .menu{
   display: flex;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 1rem 0 0;
   flex-flow: row wrap;
   gap: 1rem;
 }
@@ -83,7 +83,7 @@ nav .menu-toggle span {
     top: 2.57rem;
     left: 0;
     right: 0;
-    background: transparent;
+    background: rgba(0, 0, 0, 0.7);
     z-index: 1;
   }
 
@@ -93,7 +93,7 @@ nav .menu-toggle span {
 
   nav .menu li a {
     padding: 10px;
-    color: black;
+    color: white;
     display: block;
   }
 
