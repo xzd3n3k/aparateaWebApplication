@@ -5,6 +5,7 @@
 }
 
 .siteLogo {
+  background-color: black;
   padding: 1rem;
   transition: 300ms;
 
@@ -25,15 +26,22 @@
   display: none;
 }
 
+body {
+  padding: 6.5rem 0;
+}
+
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
   padding: 0;
-  background-color: lightgrey;
+  background: transparent;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 nav .menu{
@@ -50,7 +58,7 @@ nav .menu li {
 }
 
 nav .menu li a {
-  color: #FFFFFF;
+  color: black;
   text-decoration: none;
   display: block;
 }
@@ -63,7 +71,7 @@ nav .menu-toggle span {
   display: block;
   width: 30px;
   height: 5px;
-  background-color: #FFFFFF;
+  background-color: black;
   margin: 5px 0;
 }
 
@@ -75,7 +83,7 @@ nav .menu-toggle span {
     top: 2.57rem;
     left: 0;
     right: 0;
-    background: lightgrey;
+    background: transparent;
     z-index: 1;
   }
 
@@ -85,7 +93,7 @@ nav .menu-toggle span {
 
   nav .menu li a {
     padding: 10px;
-    color: #FFFFFF;
+    color: black;
     display: block;
   }
 
@@ -121,4 +129,33 @@ nav .menu-toggle span {
   nav .menu.active {
     text-align: center;
   }
+
+  .nav.active {
+
+    .menu {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .menu li a {
+      color: white;
+    }
+  }
+}
+
+.nav.active {
+
+  .siteLogo {
+    background-color: transparent;
+  }
+
+  background: rgba(0, 0, 0, 0.7);
+
+  .menu li a {
+    color: white;
+  }
+
+  .menu-toggle span {
+    background-color: white;
+  }
+
 }

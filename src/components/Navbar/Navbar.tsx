@@ -1,19 +1,23 @@
 import React, { ReactElement, useEffect } from "react";
 import './Navbar.scss';
-import logo from '../../images/logos/logo.png'
+import logo from '../../images/logos/logo.png';
 
 export default function Navbar(): ReactElement {
-
-    // const [menuActive, setMenuActive] = useState(false);
-    //
-    // const handleToggleClick = () => {
-    //     console.log(menuActive);
-    //     setMenuActive(!menuActive);
-    // };
 
     useEffect(() => {
         const menuToggle: Element | null = document.querySelector('.menu-toggle');
         const menu: Element | null = document.querySelector('.menu');
+        const navBar: Element | null = document.querySelector('.nav');
+
+        const changeBackground = () => {
+            if (window.scrollY <= 80 && navBar?.classList.contains('active')) {
+                navBar?.classList.toggle('active');
+            } else if (window.scrollY > 80 && !(navBar?.classList.contains('active'))) {
+                navBar?.classList.toggle('active');
+            }
+        }
+
+        window.addEventListener('scroll', changeBackground);
 
         const handleToggleClick = () => {
             if (menuToggle && menu) {
@@ -27,10 +31,10 @@ export default function Navbar(): ReactElement {
         }
 
         return () => {
-            // Cleanup: Remove the event listener when the component unmounts
             if (menuToggle) {
                 menuToggle.removeEventListener('click', handleToggleClick);
             }
+            window.removeEventListener('scroll', changeBackground);
         }
     }, []);
 
