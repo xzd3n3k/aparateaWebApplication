@@ -117,4 +117,8 @@ nav .menu-toggle span {
   nav .menu-toggle.active + .menu {
     display: flex;
   }
+
+  nav .menu.active {
+    text-align: center;
+  }
 }
