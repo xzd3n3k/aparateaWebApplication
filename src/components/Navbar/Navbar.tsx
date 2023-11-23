@@ -9,7 +9,7 @@ export default function Navbar(): ReactElement {
                 <a href="/">
                     <img src={logo} alt="logo" className={styles.siteLogo} width='200' height='auto'/>
                 </a>
-                <ul>
+                <ul className={styles.navLinks}>
                     <li>
                         <a href="/home">DOMŮ</a>
                     </li>

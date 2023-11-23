@@ -1,13 +1,27 @@
 .nav {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
-  background-color: #1A3F70;
+  background: rgb(26,63,112);
+  background: linear-gradient(180deg, rgba(26,63,112,1) 0%, rgba(9,33,64,1) 100%);
   color: white;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: stretch;
   gap: 5rem;
   padding: 0 1rem;
+
+  @media (max-width: 1084px) {
+    padding: 0 0 2rem 0;
+    gap: 2rem;
+  }
+
+  //@media (max-width: 1084px) {
+  //  .siteLogo {
+  //    //display: none;
+  //  }
+  //}
+
 }
 
 .nav ul {
@@ -17,8 +31,11 @@
   display: flex;
   gap: 1rem;
   border-bottom: 0 solid #FFFFFF;
-}
 
+  @media (max-width: 1084px) {
+    flex-flow: row wrap;
+  }
+}
 
 .nav a {
   color: inherit;
@@ -31,7 +48,8 @@
 }
 
 .nav li:active {
-  background-color: #555;
+  border-bottom: 5px solid #FFFFFF;
+  opacity: 100%;
 }
 
 .nav li{
@@ -45,7 +63,6 @@
   transition: 300ms;
 }
 
-
 .siteTitle {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 100;
@@ -55,10 +72,16 @@
 .siteLogo {
   padding: 1rem;
   transition: 300ms;
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 25px;
+    padding: 6px;
+  }
+
 }
 
 .siteLogo:hover {
   transform: scale(0.95);
   transition: 300ms;
 }
-
