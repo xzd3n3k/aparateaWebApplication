@@ -80,16 +80,16 @@ nav {
     right: 0;
     background: rgba(0, 0, 0, 0.7);
     z-index: 1;
-  }
 
-  nav .menu li{
-    width: 100%;
-  }
+    li {
+      width: 100%;
 
-  nav .menu li a {
-    padding: 10px;
-    color: white;
-    display: block;
+      a {
+        padding: 10px;
+        color: white;
+        display: block;
+      }
+    }
   }
 
   nav .menu-toggle {
