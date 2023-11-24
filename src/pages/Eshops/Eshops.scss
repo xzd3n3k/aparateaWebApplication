@@ -1,4 +1,4 @@
-.about-content-text {
+.eshops-content-text {
   display: block;
   text-align: center;
   width: 30%;
@@ -6,24 +6,19 @@
   padding: 2rem;
   border-radius: 25% 10%;
   background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
 
-.about-content {
+.eshops-overview {
   display: flex;
   gap: 5rem;
   justify-content: center;
   align-items: center;
-  padding: 0 2rem;
 }
 
-.about-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.about-container-header {
-  text-align: center;
+.eshops-content-text:hover {
+  transform: scale(0.90);
+  transition: 700ms;
 }
