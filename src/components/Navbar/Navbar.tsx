@@ -52,7 +52,7 @@ export default function Navbar(): ReactElement {
                 </div>
                 <ul className="menu">
                     <li>
-                        <a href="/home">DOMŮ</a>
+                        <a href="/">DOMŮ</a>
                     </li>
                     <li>
                         <a href="/about">O NÁS</a>
