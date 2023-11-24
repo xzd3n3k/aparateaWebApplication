@@ -1,28 +1,14 @@
-//.bg-image {
-//  background-image: url("../../images/aparatea_bg.png");
-//  background-size: cover;
-//  height: 100vh;
-//}
-
-.bg-image {
+body {
   position: relative;
-  background-image: url("../../images/aparatea_bg.png");
-  background-size: cover;
+  background: rgb(0,0,0);
+  background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3253676470588235) 100%), url("../../images/aparatea_bg.png");
   height: 100vh;
+  background-size: cover;
 }
 
-.bg-image::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  z-index: 1;
-  //border-width: 0 50vw 50vh 50vw;
-  border-width: 15vh 50vw 0 50vw;
-  border-color: transparent rgba(0, 0, 0, 0.7) transparent rgba(0, 0, 0, 0.7);
-  background-color: transparent;
+.mainLogo{
+  width: 100vh;
+  margin-top: 20vh;
 }
+
 
