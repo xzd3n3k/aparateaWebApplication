@@ -1,39 +1,15 @@
 import './Home.scss';
+import logo from "../../images/logos/logo.png";
+import React from "react";
 
 export default function Home() {
     return (
         <div>
-            <div className="bg-image">
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                    Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                    <br/>
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov Domov sladky domov
-                <br/>
-                Domov sladky domov
-                <br/>
-                Domov sladky domov
-                <br/>
-                Domov sladky domov
-                <br/>
-                Domov sladky domov
-                <br/>
-                Domov sladky domov
-            </div>
+            <center>
+                <a href="/">
+                    <img src={logo} alt="logo" className="mainLogo" width='200' height='auto'/>
+                </a>
+            </center>
         </div>
     )
 }
