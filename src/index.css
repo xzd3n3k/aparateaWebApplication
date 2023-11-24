@@ -5,6 +5,10 @@ body {
     height: 100vh;
     background-size: cover;
     margin: 0;
+    @media (max-width: 768px) {
+        height: auto;
+        width: 100%;
+    }
 }
 
 html {
