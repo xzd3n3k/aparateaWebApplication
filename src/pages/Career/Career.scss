@@ -63,6 +63,7 @@ h1 {
 .position-info {
   background-color: white;
   text-align: center;
+  height: 100%;
 
   p {
     max-width: 70%;
@@ -75,7 +76,14 @@ h1 {
 }
 
 .position-card {
-  flex-basis: 46%;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  flex-basis: 20%;
+
   @media (max-width: 1400px) {
     flex-basis: 30%;
   }
