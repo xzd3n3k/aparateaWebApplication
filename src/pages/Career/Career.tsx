@@ -38,35 +38,6 @@ export default function Career(): ReactElement {
                     </div>
 
                 ))}
-                {/*<div className="position-card">*/}
-                {/*    <div className="career-offer-top-blue"></div>*/}
-                {/*    <div className="position-info">*/}
-                {/*        <img src={unknownPerson} className="unknown-person" width={120} height={120}/>*/}
-                {/*        <h3>Jste to Vy?</h3>*/}
-                {/*        <i>Obchodní a technický zástupce</i>*/}
-                {/*        <div className="position-text">*/}
-                {/*            <p>Nabízíme nové prestižní obchodní pozice v dřevařském průmyslu. Zajímá Vás víc?</p>*/}
-                {/*            <p><b>Napište nám nebo zavolejte na 704&nbsp;192&nbsp;430.</b></p>*/}
-                {/*        </div>*/}
-                {/*        <hr/>*/}
-                {/*    </div>*/}
-                {/*    <div className="career-offer-bot-white"></div>*/}
-                {/*</div>*/}
-
-                {/*<div className="position-card">*/}
-                {/*    <div className="career-offer-top-green"></div>*/}
-                {/*    <div className="position-info">*/}
-                {/*        <img src={unknownPerson} className="unknown-person" width={120} height={120}/>*/}
-                {/*        <h3>Jste to Vy?</h3>*/}
-                {/*        <i>Obchodní a technický zástupce</i>*/}
-                {/*        <div className="position-text">*/}
-                {/*            <p>Nabízíme nové prestižní obchodní pozice v dřevařském průmyslu. Zajímá Vás víc?</p>*/}
-                {/*            <p><b>Napište nám nebo zavolejte na 704&nbsp;192&nbsp;430.</b></p>*/}
-                {/*        </div>*/}
-                {/*        <hr/>*/}
-                {/*    </div>*/}
-                {/*    <div className="career-offer-bot-white"></div>*/}
-                {/*</div>*/}
             </div>
         </div>
     )
