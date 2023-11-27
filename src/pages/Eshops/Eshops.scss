@@ -5,12 +5,13 @@
 
 .eshops-overview {
   display: flex;
-  width: 90%;
   align-items: stretch;
   justify-content: center;
   flex-wrap: wrap;
   gap: 3rem;
   padding: 2rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
 }
 
 .eshops-content-text {
