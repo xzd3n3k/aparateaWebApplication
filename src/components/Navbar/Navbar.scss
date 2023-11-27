@@ -1,15 +1,8 @@
 .siteLogo {
-  background-color: rgba(0, 0, 0, 0.7);
   padding: 1rem;
-  transition: 300ms;
-  display: none;
-
-  @media (max-width: 768px) {
-    width: 100px;
-    height: 25px;
-    padding: 6px;
-  }
-
+  transition: all 400ms;
+  width: 0;
+  height: 0;
 }
 
 .siteLogo:hover {
@@ -31,6 +24,7 @@ nav {
   align-items: center;
   padding: 0;
   background: transparent;
+  transition: background-color 400ms;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
   position: fixed;
@@ -43,6 +37,7 @@ nav {
     list-style: none;
     margin: 0;
     padding: 1rem 1rem 1rem 0;
+    transition: padding 400ms;
     flex-flow: row wrap;
     gap: 1rem;
 
@@ -51,6 +46,7 @@ nav {
 
       a {
         color: black;
+        transition: color 400ms;
         text-decoration: none;
         display: block;
       }
@@ -141,10 +137,15 @@ nav {
 
   .siteLogo {
     background-color: transparent;
-    display: flex;
+    width: 200px;
+    height: auto;
   }
 
   background: rgba(0, 0, 0, 0.7);
+
+  .menu {
+    padding: 40px 1rem 40px 0;
+  }
 
   .menu li a {
     color: white;
@@ -154,4 +155,13 @@ nav {
     background-color: white;
   }
 
+}
+
+.siteLogo, .nav.active .siteLogo {
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 25px;
+    padding: 6px;
+  }
 }
