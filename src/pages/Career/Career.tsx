@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import './Career.scss';
 import unknownPerson from "../../images/unknown_person.png";
 
-export default function Career() {
+export default function Career(): ReactElement {
     return (
         <div className="career-page">
             <h1>Volné pozice</h1>

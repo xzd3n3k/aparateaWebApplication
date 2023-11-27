@@ -11,7 +11,14 @@ h1 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
 
+  padding: 2rem;
+  border-radius: 25% 10%;
+  background: rgba(255, 255, 255, 0.3);
+
+
   @media (max-width: 700px) {
+    margin-left: 5%;
+    margin-right: 5%;
     font-size: 1rem;
     max-width: 80%;
   }
