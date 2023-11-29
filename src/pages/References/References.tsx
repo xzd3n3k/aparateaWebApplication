@@ -28,7 +28,9 @@ const references: Array<TReference> = [
 export default function References(): ReactElement {
     return (
         <div className="references-bg">
-            <h1>Reference klientů</h1>
+            <div className="ref-bg">
+                <h1>Reference klientů</h1>
+            </div>
             <div className="references-background">
                 <div className="references-header">
                     <p>Máte vlastní recenzi, kterou byste chtěli umístit na web? Napište nám do kontakního formuláře či přímo na mail <b><a href="mailto:sro@aparatea.cz">sro@aparatea.cz</a></b> &#128521;</p>
