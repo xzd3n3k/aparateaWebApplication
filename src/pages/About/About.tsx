@@ -3,10 +3,7 @@ import './About.scss';
 export default function About() {
     return (
         <div className="about-container">
-            <div className="about-container-header">
-                <h4>A něco málo…</h4>
-                <h2>O NÁS</h2>
-            </div>
+            <div className="about-bg"><h4>Od profesionálů pro profesionály</h4></div>
 
             <div className="about-content">
                 <div className="about-content-text">

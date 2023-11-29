@@ -18,6 +18,10 @@ body {
   padding-top: 6.5rem;
 }
 
+.transparent-navbar {
+  background-color: transparent !important;
+}
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -40,12 +44,15 @@ nav {
     transition: padding 400ms;
     flex-flow: row wrap;
     gap: 1rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
 
     li {
       margin: 0 10px;
 
       a {
         color: black;
+        font-weight: bold;
         transition: color 400ms;
         text-decoration: none;
         display: block;
@@ -145,10 +152,12 @@ nav {
 
   .menu {
     padding: 40px 1rem 40px 0;
+    background-color: transparent;
   }
 
   .menu li a {
     color: white;
+    font-weight: 100;
   }
 
   .menu-toggle span {

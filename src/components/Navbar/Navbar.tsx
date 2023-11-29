@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect } from "react";
 import './Navbar.scss';
 import logo from '../../images/logos/logo.png';
+import { useLocation } from "react-router-dom";
 
 export default function Navbar(): ReactElement {
 
@@ -37,7 +38,7 @@ export default function Navbar(): ReactElement {
             window.removeEventListener('scroll', changeBackground);
         }
     }, []);
-
+    const location = useLocation();
     return (
         <div>
             <nav className="nav">
@@ -50,7 +51,7 @@ export default function Navbar(): ReactElement {
                     <span></span>
                     <span></span>
                 </div>
-                <ul className="menu">
+                <ul className={`menu ${location.pathname === '/' ? "transparent-navbar" : ""}`}>
                     <li>
                         <a href="/">DOMŮ</a>
                     </li>

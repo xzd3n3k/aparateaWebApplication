@@ -27,7 +27,7 @@ const references: Array<TReference> = [
 
 export default function References(): ReactElement {
     return (
-        <div>
+        <div className="references-bg">
             <h1>Reference klientů</h1>
             <div className="references-background">
                 <div className="references-header">
