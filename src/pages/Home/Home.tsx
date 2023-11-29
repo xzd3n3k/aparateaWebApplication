@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Home() {
     return (
-        <div className="home-page">
+        <div className="home-container">
             <center>
                 <a href="/">
                     <img src={logo} alt="logo" className="mainLogo" width='200' height='auto'/>
