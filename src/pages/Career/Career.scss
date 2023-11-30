@@ -76,12 +76,12 @@ h1 {
 }
 
 .position-card {
-    box-sizing: border-box;
-    text-align: center;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   flex-basis: 20%;
 
   @media (max-width: 1400px) {
