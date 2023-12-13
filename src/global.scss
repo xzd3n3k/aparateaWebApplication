@@ -1,0 +1,21 @@
+:root {
+  --theme-color-primary: rgba(33, 62, 109, 1);
+  --theme-color-secondary: rgba(70, 70, 70, 1);
+  --theme-color-secondary-light: #CDCDCD;
+  --white-color: rgba(255, 255, 255, 1);
+  --black-color: rgba(17, 17, 17, 1);
+
+  --heading-size: 50px;
+  --heading-2-size: calc(var(--heading-size)/1.618);
+  --heading-3-size: calc(var(--heading-2-size)/1.618);
+  --font-size-base: 18px;
+  --font-size-half: calc(var(--font-size-base)/2);
+
+  --padding-base: 16px;
+  --pading-half: calc(var(--padding-base)/2);
+  --pading-quarter: calc(var(--padding-half)/2);
+
+  --gap-base: 16px;
+  --gap-half: calc(var(--gap-base)/2);
+  --gap-quarter: calc(var(--gap-half)/2);
+}
