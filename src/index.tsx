@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Home, About, Eshops, Career, References } from "./pages";
+import { Home, About, Eshops, References } from "./pages";
 import { Navbar, Footer } from './components';
 import './global.scss';
 
@@ -20,7 +20,6 @@ root.render(
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/eshops" element={<Eshops />} />
-                    <Route path="/career" element={<Career />} />
                     <Route path="/references" element={<References />} />
                 </Routes>
                 </div>

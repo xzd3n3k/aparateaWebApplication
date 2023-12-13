@@ -40,18 +40,15 @@ export default function Navbar(): ReactElement {
     }, []);
     const location = useLocation();
     return (
-        <div>
-            <nav className="nav">
-                <a href="/">
-                    <img src={logo} alt="logo" className="siteLogo" width='200' height='auto'/>
-                </a>
+        <div className="navbar-container">
+            <nav className="nav justify-end items-center">
                 <div className="menu-toggle">
                     <input type="checkbox" className="bar"/>
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
-                <ul className={`menu ${location.pathname === '/' ? "transparent-navbar" : ""}`}>
+                <ul className={`menu items-center ${location.pathname === '/' ? "transparent-navbar" : ""}`}>
                     <li>
                         <a href="/">DOMŮ</a>
                     </li>
@@ -59,16 +56,19 @@ export default function Navbar(): ReactElement {
                         <a href="/about">O NÁS</a>
                     </li>
                     <li>
-                        <a href="/eshops">NAŠE E-SHOPY</a>
+                        <a href="/tools">NÁSTROJE</a>
                     </li>
                     <li>
-                        <a href="/career">VOLNÁ MÍSTA</a>
+                        <a href="/grinding">BROUŠENÍ</a>
                     </li>
                     <li>
                         <a href="/references">REFERENCE</a>
                     </li>
                     <li>
                         <a href="/contact">KONTAKT</a>
+                    </li>
+                    <li className="featured">
+                        <a href="/eshops">NAŠE E-SHOPY</a>
                     </li>
                 </ul>
             </nav>
