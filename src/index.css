@@ -4,3 +4,8 @@ html {
 body {
     margin: 0;
 }
+
+.mainClass {
+    min-height: 100vh !important;
+    position: relative;
+}

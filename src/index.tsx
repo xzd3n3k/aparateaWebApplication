@@ -4,7 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Home, About, Eshops, Career, References } from "./pages";
-import { Navbar } from './components';
+import { Navbar, Footer } from './components';
 import './global.scss';
 
 const root = ReactDOM.createRoot(
@@ -15,6 +15,7 @@ root.render(
         <Router>
             <div>
                 <Navbar />
+                <div className="mainClass">
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
@@ -22,6 +23,8 @@ root.render(
                     <Route path="/career" element={<Career />} />
                     <Route path="/references" element={<References />} />
                 </Routes>
+                </div>
+                <footer><Footer /></footer>
             </div>
         </Router>
     </div>
