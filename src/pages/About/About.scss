@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: flex-start;
   position: relative;
-  padding-bottom: var(--padding-base);
+  padding-bottom: calc(var(--padding-base)*4);
 
   .parts {
     display: flex;
