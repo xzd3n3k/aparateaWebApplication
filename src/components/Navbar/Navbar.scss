@@ -37,9 +37,18 @@
         a {
           color: var(--theme-color-primary) !important;
         }
+
+        &:hover {
+          transition: all 500ms;
+          background-color: var(--theme-color-primary) !important;
+          a {
+            color: var(--white-color) !important;
+          }
+        }
       }
 
       li {
+        padding: var(--padding-half);
         margin: 0 10px;
 
         a {
@@ -48,6 +57,11 @@
           transition: color 400ms;
           text-decoration: none;
           display: block;
+        }
+
+        &:hover {
+          border-bottom: 2px solid var(--white-color);
+          padding-bottom: calc(var(--padding-half) - 2px);
         }
       }
     }
@@ -142,6 +156,13 @@
 
     .menu-toggle span {
       background-color: white;
+    }
+
+    li {
+      &:hover {
+        border-bottom: 2px solid var(--white-color);
+        padding-bottom: calc(var(--padding-half) - 2px);
+      }
     }
 
   }
