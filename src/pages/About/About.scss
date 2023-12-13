@@ -83,9 +83,10 @@
   .first-part {
     display: flex;
     flex-direction: row;
+    flex-flow: row wrap;
     gap: calc(var(--gap-base)*4);
     padding: 0 calc(var(--padding-base)*5);
-    text-align: justify;
+    text-align: start;
   }
 
   .first-part-col {
@@ -98,5 +99,9 @@
   .first-part-col-img {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .max-width-half {
+    max-width: 40% !important;
   }
 }

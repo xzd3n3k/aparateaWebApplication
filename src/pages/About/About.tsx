@@ -16,7 +16,7 @@ export default function About() {
 
             <div className="parts">
                 <div className="first-part">
-                    <div className="first-part-col">
+                    <div className="first-part-col items-end">
                         <div>
                             <Title text={"O NAŠÍ FIRMĚ"}/>
                             <p>
@@ -40,18 +40,18 @@ export default function About() {
                         </div>
                         <img src={logo} alt="logo" className="about-text-logo" width='400' height='auto'/>
                     </div>
-                    <div className="first-part-col-img">
+                    <div className="first-part-col-img items-end">
                         <img src={about_freza} alt="freza" width='400' height='auto'/>
                     </div>
                 </div>
                 <div className="first-part">
-                    <div className="second-part-text">
+                    <div className="second-part-text max-width-half">
                         <Title text={"ODBORNÉ PORADENSTVÍ VE STROJÍRENSTVÍ"}/>
                         <p>Poskytujeme odborné poradenství ve strojírenství s dlouholetými zkušenostmi, abychom vám mohli nabídnout optimální řešení pro zpracování dřeva. Naše moderní a profesionální ostřící centrum je vybaveno nejnovějšími technologiemi, které nám umožňují efektivně a precizně servisovat různé typy nástrojů.</p>
                         <p>Díky našim zkušeným operátorům a modernímu vybavení můžeme řešit i ty nejnáročnější požadavky.</p>
                         <img src={about_vystavene} alt="freza" className="vystavene-frezy"/>
                     </div>
-                    <div>
+                    <div className="max-width-half">
                         <Title text={"RYCHLÝ A LEVNÝ SERVIS NÁSTROJŮ"}/>
                         <p>Díky speciálním novým technologiím a vybranému způsobu obsluze dokážeme efektivně, levně, rychle a především profesionálně udělat servis mnoha přístrojů.</p>
                         <p>Díky modernímu a profesionálnímu ostřícímu centru nabízíme kvalitní servis DIA a HW nástrojů. Zkušení operátoři mohou řešit nejnáročnější požadavky.</p>
