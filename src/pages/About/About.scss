@@ -29,6 +29,53 @@
     }
   }
 
+  @media screen and (max-width: 1145px) {
+    .vystavene-frezy {
+      width: 300px !important;
+      height: 300px !important;
+    }
+
+    .double-frezy {
+      width: 300px !important;
+      height: 150px !important;
+    }
+
+    .first-part {
+      padding: 0 var(--padding-base) !important;
+    }
+  }
+
+  @media screen and (max-width: 950px) {
+    .vystavene-frezy {
+      width: 200px !important;
+      height: 200px !important;
+    }
+
+    .double-frezy {
+      width: 200px !important;
+      height: 100px !important;
+    }
+  }
+
+  @media screen and (max-width: 520px) {
+    .about-text-logo {
+      width: 300px;
+    }
+
+    .freza-laser {
+      width: 300px;
+    }
+
+    .first-part {
+      flex-direction: column !important;
+      align-items: center !important;
+    }
+
+    .max-width-class {
+      max-width: 80% !important;
+    }
+  }
+
   height: 100%;
   width: 100%;
 
@@ -86,6 +133,7 @@
     gap: calc(var(--gap-base)*4);
     padding: 0 calc(var(--padding-base)*5);
     text-align: start;
+    justify-content: center;
   }
 
   .first-part-col {
@@ -100,7 +148,7 @@
     justify-content: flex-end;
   }
 
-  .max-width-half {
-    max-width: 40% !important;
+  .max-width-class {
+    max-width: 40%;
   }
 }
