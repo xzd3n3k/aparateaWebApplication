@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from "react";
 import './Navbar.scss';
 import logo from '../../images/logos/logo.png';
 import { useLocation } from "react-router-dom";
-
+import logo_square from "../../images/logos/logo_square_white.png";
 export default function Navbar(): ReactElement {
 
     useEffect(() => {
@@ -41,7 +41,8 @@ export default function Navbar(): ReactElement {
     const location = useLocation();
     return (
         <div className="navbar-container">
-            <nav className="nav justify-end items-center">
+            <nav className="nav justify-between items-center">
+                <img src={logo_square} alt="logo" className="about-text-logo" width='60' height='auto'/>
                 <div className="menu-toggle">
                     <input type="checkbox" className="bar"/>
                     <span></span>

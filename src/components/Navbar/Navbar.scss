@@ -10,7 +10,6 @@
 
   nav {
     display: flex;
-    padding: 0;
     background: transparent;
     transition: background-color 400ms;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -27,7 +26,6 @@
       padding: 1rem 1rem 1rem 0;
       transition: padding 400ms;
       flex-flow: row wrap;
-      gap: 1rem;
 
       .featured {
 
