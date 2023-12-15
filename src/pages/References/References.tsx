@@ -30,7 +30,7 @@ export default function References(): ReactElement {
     return (
         <div className="references-container">
             <div className="top-background">
-                <Heading text={"Reference klientů"}></Heading>
+                <Heading text={"REFERENCE KLIENTŮ"}></Heading>
                 <Subheading text={"Záleží nám na Vašem názoru..."}/>
             </div>
             <div className="references-background">
