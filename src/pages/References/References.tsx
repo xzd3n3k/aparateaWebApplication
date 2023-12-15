@@ -29,7 +29,7 @@ const references: Array<TReference> = [
 export default function References(): ReactElement {
     return (
         <div className="references-container">
-            <div className="ref-bg">
+            <div className="top-background">
                 <Heading text={"Reference klientů"}></Heading>
             </div>
             <div className="references-background">
