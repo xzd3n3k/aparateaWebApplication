@@ -23,8 +23,7 @@ root.render(
                     <Route path="/references" element={<References />} />
                 </Routes>
                 </div>
-                <Footer/>
-                {/*<footer><Footer /></footer>*/}
+                <footer><Footer /></footer>
             </div>
         </Router>
     </div>

@@ -16,15 +16,30 @@
     @media screen and (max-width: 1145px) {
       padding-left: var(--padding-base) !important;
     }
+
+    @media screen and (max-width: 800px) {
+      font-size: calc(var(--heading-size)/1.5)
+    }
+  }
+
+  .subheading-container {
+    width: 100%;
+    height: 30%;
+    color: white;
+    margin-top: -100px;
+    padding-left: calc(var(--padding-base)*5);
+    box-sizing: border-box;
+
+    @media screen and (max-width: 1145px) {
+      padding-left: var(--padding-base) !important;
+    }
+
+    @media screen and (max-width: 800px) {
+      font-size: calc(var(--heading-2-size)/1.5)
+    }
   }
 
   .top-background {
-    //background: url("../../images/references.png") no-repeat;
-    //height: 500px;
-    //width: 100%;
-    //background-size: 100% 100%;
-    //margin-top: -104px;
-
     background: url("../../images/reference_tkadlec.png") no-repeat center center;
     background-size: 1080*1.2px 1920*1.2px;
     height: 360px;
