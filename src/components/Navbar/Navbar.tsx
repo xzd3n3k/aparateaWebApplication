@@ -65,7 +65,7 @@ export default function Navbar(): ReactElement {
                         <a href="/references">REFERENCE</a>
                     </li>
                     <li>
-                        <a className="disabled" href="/contact">KONTAKT</a>
+                        <a href="/contact">KONTAKT</a>
                     </li>
                     <li className="featured">
                         <a href="/eshops">NAŠE E-SHOPY</a>

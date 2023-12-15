@@ -1,0 +1,54 @@
+.contact-container {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.74) 100%);
+  margin-top: -104px;
+  padding-top: 90px;
+
+  .heading-container {
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    padding: 200px 0 0 calc(var(--padding-base) * 5);
+
+    @media screen and (max-width: 1145px) {
+      padding-left: var(--padding-base) !important;
+    }
+
+    @media screen and (max-width: 800px) {
+      font-size: calc(var(--heading-size)/1.5)
+    }
+  }
+
+  .subheading-container {
+    width: 100%;
+    height: 30%;
+    color: white;
+    margin-top: -100px;
+    padding-left: calc(var(--padding-base)*5);
+    box-sizing: border-box;
+
+    @media screen and (max-width: 1145px) {
+      padding-left: var(--padding-base) !important;
+    }
+
+    @media screen and (max-width: 800px) {
+      font-size: calc(var(--heading-2-size)/1.5)
+    }
+  }
+
+  .top-background {
+    background: url("../../images/eshops.png") no-repeat center center;
+    background-size: 1280px 530px;
+    height: 360px;
+    width: 100%;
+    margin-top: -104px;
+
+    @media screen and (min-width: 1400px) {
+      background-size: 1280*1.8px 530*1.8px;
+    }
+  }
+
+}

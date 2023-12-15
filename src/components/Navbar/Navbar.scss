@@ -1,5 +1,11 @@
 .navbar-container {
 
+  .disabled {
+    text-decoration: none !important;
+    pointer-events: none !important;
+    color: rgba(white, 0.4) !important;
+  }
+
   li:has(> a.disabled){
     cursor: not-allowed;
     border-bottom: none !important;
