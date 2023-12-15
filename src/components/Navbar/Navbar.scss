@@ -1,5 +1,11 @@
 .navbar-container {
 
+  li:has(> a.disabled){
+    cursor: not-allowed;
+    border-bottom: none !important;
+    padding-bottom: var(--padding-half) !important;
+  }
+
   .navbar-logo {
     z-index: 999;
     padding-left: calc(var(--padding-base)*2);

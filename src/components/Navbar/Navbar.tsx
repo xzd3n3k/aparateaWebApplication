@@ -56,16 +56,16 @@ export default function Navbar(): ReactElement {
                         <a href="/about">O NÁS</a>
                     </li>
                     <li>
-                        <a href="/tools">NÁSTROJE</a>
+                        <a className="disabled" href="/tools">NÁSTROJE</a>
                     </li>
                     <li>
-                        <a href="/grinding">BROUŠENÍ</a>
+                        <a className="disabled" href="/grinding">BROUŠENÍ</a>
                     </li>
                     <li>
                         <a href="/references">REFERENCE</a>
                     </li>
                     <li>
-                        <a href="/contact">KONTAKT</a>
+                        <a className="disabled" href="/contact">KONTAKT</a>
                     </li>
                     <li className="featured">
                         <a href="/eshops">NAŠE E-SHOPY</a>

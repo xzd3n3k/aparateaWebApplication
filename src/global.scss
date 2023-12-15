@@ -130,4 +130,11 @@
   .max-width-half {
     max-width: 50%;
   }
+
+  .disabled {
+      text-decoration: none !important;
+      pointer-events: none !important;
+      color: rgba(white, 0.4) !important;
+  }
+
 }
