@@ -1,5 +1,10 @@
 .navbar-container {
 
+  .navbar-logo {
+    z-index: 999;
+    padding-left: calc(var(--padding-base)*2);
+  }
+
   .bar {
     display: none;
   }
@@ -89,7 +94,7 @@
       z-index: 1;
 
       li {
-        width: 100%;
+        width: 50%;
 
         a {
           padding: 10px;

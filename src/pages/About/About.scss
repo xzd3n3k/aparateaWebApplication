@@ -43,6 +43,16 @@
     .first-part {
       padding: 0 var(--padding-base) !important;
     }
+
+    .heading-container, .subheading-container {
+      padding-left: var(--padding-base) !important;
+    }
+
+    .navbar-container {
+      .navbar-logo {
+        padding-left: var(--padding-base) !important;
+      }
+    }
   }
 
   @media screen and (max-width: 950px) {
@@ -87,7 +97,7 @@
     margin-top: -104px;
 
     @media screen and (min-width: 1400px) {
-      background-size: 1440*1.3px 360*1.3px;
+      background-size: 1440*1.4px 360*1.4px;
     }
 
     .heading-container {
@@ -96,7 +106,7 @@
       color: white;
       background-color: rgba(0, 0, 0, 0.3);
       box-sizing: border-box;
-      padding: 200px 0 0 100px;
+      padding: 200px 0 0 calc(var(--padding-base)*5);
     }
 
     .subheading-container {
@@ -104,7 +114,7 @@
       height: 30%;
       color: white;
       margin-top: -100px;
-      padding-left: 100px;
+      padding-left: calc(var(--padding-base)*5);
       box-sizing: border-box;
     }
   }

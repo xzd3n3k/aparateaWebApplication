@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import './References.scss';
 import unknownCompany from "../../images/unknown_person.png";
 import TReference from "../../TReference";
+import {Heading} from "../../components";
 
 const references: Array<TReference> = [
     {
@@ -27,9 +28,9 @@ const references: Array<TReference> = [
 
 export default function References(): ReactElement {
     return (
-        <div className="references-bg">
+        <div className="references-container">
             <div className="ref-bg">
-                <h1>Reference klientů</h1>
+                <Heading text={"Reference klientů"}></Heading>
             </div>
             <div className="references-background">
                 <div className="references-header">
