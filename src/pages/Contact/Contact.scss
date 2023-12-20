@@ -51,4 +51,26 @@
     }
   }
 
+  iframe {
+    border: 0;
+    width: 40%;
+  }
+
+  .find-us {
+    width: 50%;
+  }
+
+  .find-us-content {
+    max-width: 80%;
+  }
+
+  .subtitle-container {
+    color: var(--theme-color-secondary);
+  }
+
+  p {
+    font-weight: 300;
+    margin: 0;
+  }
+
 }

@@ -5,3 +5,4 @@ export { default as Subheading  } from './Subheading/Subheading';
 export { default as Title } from './Title/Title';
 export { default as Footer } from './Footer/Footer';
 export { default as ImageSlider } from './ImageSlider/ImageSlider';
+export { default as Subtitle } from './Subtitle/Subtitle';
