@@ -3,6 +3,26 @@ import React, { ReactElement } from "react";
 import {Heading, Subheading, Subtitle, Title} from "../../components";
 
 export default function Contact(): ReactElement {
+    const companyAddress = 'Tuřanka 295/52, Aparatea, s.r.o.';
+
+    const isTouchScreenDevice = () => {
+        try{
+            document.createEvent('TouchEvent');
+            return true;
+        }catch(e){
+            return false;
+        }
+    }
+    const handleNavigationClick = () => {
+        const formattedAddress = encodeURIComponent(companyAddress);
+
+        if (isTouchScreenDevice()) {
+            window.open(`geo:0,0?q=${formattedAddress}`, '_blank');
+        } else {
+            window.open(`https://www.google.com/maps/search/?api=1&query=${formattedAddress}`, '_blank');
+        }
+    }
+
     return (
         <div className="contact-container">
             <div className="top-background">
@@ -22,6 +42,7 @@ export default function Contact(): ReactElement {
                             <p>627 00 Brno-Slatina</p>
                             <p>Česká republika</p>
                         </div>
+                        <button  className={`${isTouchScreenDevice() ? 'navigate-btn-ionic' : 'navigate-btn-browser'}`}>Navigovat</button>
                     </div>
                 </div>
             </div>

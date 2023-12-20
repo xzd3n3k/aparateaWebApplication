@@ -73,4 +73,32 @@
     margin: 0;
   }
 
+  .navigate-btn-ionic, .navigate-btn-browser {
+    border: 0;
+    user-select: none !important;
+    cursor: pointer;
+
+    width: 130px;
+    background-color: var(--white-color);
+    padding: var(--padding-half);
+    color: var(--theme-color-primary);
+    font-weight: bold;
+  }
+
+  .navigate-btn-browser {
+    &:hover {
+      transition: all 500ms;
+      background-color: var(--theme-color-primary) !important;
+      color: var(--white-color) !important;
+    }
+  }
+
+  .navigate-btn-ionic {
+   &:active {
+     transition: box-shadow 400ms;
+     box-shadow: 0 0 0 3px var(--theme-color-secondary-tint);
+     background-color: var(--theme-color-secondary-light-grey);
+   }
+  }
+
 }
