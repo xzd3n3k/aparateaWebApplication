@@ -1,7 +1,13 @@
 :root {
+
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+
   --theme-color-primary: rgba(33, 62, 109, 1);
+  --theme-color-primary-light: rgb(43, 82, 145);
   --theme-color-secondary: rgba(70, 70, 70, 1);
   --theme-color-secondary-light: #CDCDCD;
+  --theme-color-secondary-light-grey: #f5f5f5;
+  --theme-color-secondary-tint: #e1e1e1;
   --white-color: rgba(255, 255, 255, 1);
   --black-color: rgba(17, 17, 17, 1);
 
