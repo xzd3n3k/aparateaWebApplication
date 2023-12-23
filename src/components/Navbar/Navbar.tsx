@@ -59,7 +59,7 @@ export default function Navbar(): ReactElement {
                         <a className="disabled" href="/tools">NÁSTROJE</a>
                     </li>
                     <li>
-                        <a className="disabled" href="/grinding">BROUŠENÍ</a>
+                        <a className="disabled" href="/sharpening">BROUŠENÍ</a>
                     </li>
                     <li>
                         <a href="/references">REFERENCE</a>
