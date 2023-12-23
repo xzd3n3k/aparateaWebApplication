@@ -1,6 +1,6 @@
 import './Contact.scss';
 import React, { ReactElement } from "react";
-import {Heading, Subheading, Subtitle, Title} from "../../components";
+import {Heading, Navbar, Subheading, Subtitle, Title} from "../../components";
 
 export default function Contact(): ReactElement {
     const companyAddress = 'Tuřanka 295/52, Aparatea, s.r.o.';
@@ -25,6 +25,7 @@ export default function Contact(): ReactElement {
 
     return (
         <div className="contact-container">
+            <Navbar />
             <div className="top-background">
                 <Heading text={"NAPIŠTE NÁM"}></Heading>
                 <Subheading text={"Jsme tu pro Vás..."}/>

@@ -1,8 +1,10 @@
 import './Eshops.scss';
+import {Navbar} from "../../components";
 
 export default function Eshops() {
     return (
         <div className="eshops-container">
+            <Navbar />
             <div className="eshops-overview">
                 <div>
                 <a href="https://www.stopkovefrezy.cz/" rel="noreferrer noopener" target="_blank" className="eshops-content-text">

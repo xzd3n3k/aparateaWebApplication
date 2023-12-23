@@ -4,11 +4,12 @@ import about_freza from "../../images/about_freza.png";
 import about_vystavene from "../../images/about_vystavene_frezy.png";
 import about_double from "../../images/about_double.png";
 import React from "react";
-import { Heading, Subheading, Title } from "../../components";
+import {Heading, Navbar, Subheading, Title} from "../../components";
 
 export default function About() {
     return (
         <div className="about-container">
+            <Navbar />
             <div className="top-background">
                 <Heading text={"KDO JSME?"}/>
                 <Subheading text={"Něco málo o nás..."}/>

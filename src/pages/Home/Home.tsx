@@ -1,6 +1,7 @@
 import './Home.scss';
 import logo from "../../images/logos/logo.png";
 import React from "react";
+import {Navbar} from "../../components";
 
 export default function Home() {
 
@@ -19,6 +20,7 @@ export default function Home() {
 
     return (
         <div className="home-container">
+            <Navbar />
             <center>
                 <a href="/">
                     <img src={logo} alt="logo" className="mainLogo" width='200' height='auto'/>
