@@ -4,3 +4,7 @@ export { default as Eshops } from './Eshops/Eshops';
 export { default as References } from './References/References';
 export { default as Contact } from './Contact/Contact';
 export { default as Tools } from './Tools/Tools';
+export { default as Sharpening } from './Sharpening/Sharpening';
+export { Login } from './Sharpening/pages/';
+export { Records } from './Sharpening/pages';
+export { Settings } from './Sharpening/pages';

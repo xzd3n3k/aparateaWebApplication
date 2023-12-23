@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Home, About, Eshops, References, Contact, Tools } from "./pages";
-import { Navbar, Footer } from './components';
+import {Home, About, Eshops, References, Contact, Tools, Sharpening, Login, Records, Settings} from "./pages";
+import { Footer } from './components';
 import './global.scss';
+import 'bootstrap/dist/css/bootstrap.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,15 +15,18 @@ root.render(
     <div>
         <Router>
             <div>
-                <Navbar />
                 <div className="mainClass">
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/tools" element={<Tools />} />
+                    <Route path="/sharpening" element={<Sharpening />} />
                     <Route path="/references" element={<References />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/eshops" element={<Eshops />} />
+                    <Route path="/sharpening/login" element={<Login />} />
+                    <Route path="/sharpening/records" element={<Records />} />
+                    <Route path="/sharpening/settings" element={<Settings />} />
                 </Routes>
                 </div>
                 <footer><Footer /></footer>
