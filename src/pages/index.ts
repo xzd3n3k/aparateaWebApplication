@@ -8,3 +8,4 @@ export { default as Sharpening } from './Sharpening/Sharpening';
 export { Login } from './Sharpening/pages/';
 export { Records } from './Sharpening/pages';
 export { Settings } from './Sharpening/pages';
+export { Accounts } from './Sharpening/pages';

@@ -1,10 +1,8 @@
 import './Login.scss';
 import React, { ReactElement, useState } from "react";
-import token from "../../../../token";
 import api from "../../../../api";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 export default function Login(): ReactElement {
     const [email, setEmail] = useState<string>('');
@@ -25,7 +23,8 @@ export default function Login(): ReactElement {
         const result = await response.json();
 
         if (response.status === 200) {
-            token.setTokenData(result.access_token, new Date(result.expires));
+            localStorage.setItem('token', result.access_token);
+            localStorage.setItem('token_expires', result.expires);
             window.location.href = "/sharpening/records";
         } else {
             toast.error("Špatné přihlašovací údaje!");
