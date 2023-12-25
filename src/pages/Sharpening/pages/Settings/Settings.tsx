@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import api from "../../../../api";
 
 export default function Settings(): ReactElement {
-
+    const [updateUsers, setUpdateUsers] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showCredentials, setShowCredentials] = useState(false);
 
@@ -89,7 +89,7 @@ export default function Settings(): ReactElement {
         <div className="d-flex flex-column gap-3">
             <span className="d-flex flex-row gap-3">
                 <label className="form-label">Generate random acc</label>
-                <input type="checkbox" id="genRandom" name="genRandom" className="form-check-input"
+                <input type="checkbox" id="genRandom" name="genRandom" className="form-check-input" defaultChecked={false}
                        onChange={(event) => {
                            setGenerateRandom((prevGenerateRandom) => {
                                if (event.target.checked) {
@@ -140,6 +140,12 @@ export default function Settings(): ReactElement {
         </div>;
 
     const confirmModal = async () => {
+        const checkbox: HTMLInputElement | null = document.getElementById('genRandom') as HTMLInputElement;
+        if(checkbox) {
+            checkbox.checked = false;
+            setGenerateRandom(false);
+        }
+
         switch (selectedOption) {
             case "users":
 
@@ -168,6 +174,7 @@ export default function Settings(): ReactElement {
                         if (generateRandom) {
                             setShowCredentials(true);
                         }
+                        setUpdateUsers(!updateUsers);
                         toast.success(`Uživatelský účet vytvořen`);
                     }
 
@@ -197,7 +204,7 @@ export default function Settings(): ReactElement {
     const renderComponent = () => {
         switch (selectedOption) {
             case "users":
-                return <Accounts />;
+                return <Accounts updateUsers={updateUsers} />;
             case "customers":
                 return 'zakaznici';
             case "tools":
