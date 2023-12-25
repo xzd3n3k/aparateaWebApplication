@@ -4,6 +4,9 @@ import api from "../../../../api";
 import TAccount from "../../../../TAccount";
 import { x, pencil } from "../../../../images";
 import React from "react";
+import { Modal } from "../../../../components";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Accounts(): ReactElement {
 
@@ -60,13 +63,33 @@ export default function Accounts(): ReactElement {
         }
     };
 
-    const handleDelete = async (userId: number) => {
-        deleteUser(userId);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedUserEmail, setSelectedUserEmail] = useState('');
+    const [selectedUserId, setSelectedUserId] = useState(0);
+
+    const openModal = (userEmail: string, userId: number) => {
+        setShowModal(true);
+        setSelectedUserEmail(userEmail);
+        setSelectedUserId(userId);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setSelectedUserEmail('');
+    };
+
+    const confirmModal = () => {
+        deleteUser(selectedUserId);
+        toast.success(`Uživatel ${selectedUserEmail} úspěšně smazán`);
+        setShowModal(false);
+        setSelectedUserEmail('');
+        setSelectedUserId(0);
     };
 
 
     return (
         <div>
+            <Modal isOpen={showModal} handleClose={closeModal} handleConfirm={confirmModal} title="Smazat" body={<p>{`Opravdu si přejete smazat uživatele ${selectedUserEmail}?`}</p>} confirmButtonText="Smazat" buttonColor="btn-danger" />
             <table className="table table-hover">
                 <thead>
                 <tr>
@@ -92,7 +115,7 @@ export default function Accounts(): ReactElement {
                             <button className="btn btn-light" onClick={() => {}}>
                                 <img src={pencil} alt="Edit" width="24" height="24" />
                             </button>
-                            <button className="btn btn-light" onClick={() => {handleDelete(user.id)}}>
+                            <button className="btn btn-light" onClick={() => {openModal(user.email, user.id)}}>
                                 <img src={x} alt="Delete" width="24" height="24" />
                             </button>
                         </td>
@@ -100,6 +123,7 @@ export default function Accounts(): ReactElement {
                 ))}
                 </tbody>
             </table>
+            <ToastContainer theme="light" />
         </div>
     )
 }
