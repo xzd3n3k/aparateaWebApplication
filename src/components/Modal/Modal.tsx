@@ -7,7 +7,7 @@ interface IProps {
     title: string;
     body: ReactNode;
     confirmButtonText: string;
-    buttonColor: 'btn-primary' | 'btn-danger' | 'btn-success' | 'btn-secondary';
+    buttonColor: 'btn-primary' | 'btn-danger' | 'btn-success' | 'btn-secondary' | 'visually-hidden';
 }
 
 const Modal = ({ isOpen, handleClose, handleConfirm, title, body, confirmButtonText, buttonColor }: IProps) => {
