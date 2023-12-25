@@ -1,8 +1,7 @@
 import './Login.scss';
 import React, { ReactElement, useState } from "react";
 import api from "../../../../api";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 
 export default function Login(): ReactElement {
     const [email, setEmail] = useState<string>('');
@@ -38,7 +37,6 @@ export default function Login(): ReactElement {
                 <input type="email" className="form-control" placeholder="Zadejte email" onChange={e => setEmail(e.target.value)} />
                 <input type="password" className="form-control" placeholder="Zadejte heslo" onChange={e => setPassword(e.target.value)} />
                 <button type="submit" className="btn btn-light">Přihlásit</button>
-                <ToastContainer theme="light" />
             </form>
         </div>
     )

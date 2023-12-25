@@ -7,6 +7,8 @@ import {Home, About, Eshops, References, Contact, Tools, Sharpening, Login, Reco
 import { Footer } from './components';
 import './global.scss';
 import 'bootstrap/dist/css/bootstrap.css';
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,6 +18,7 @@ root.render(
         <Router>
             <div>
                 <div className="mainClass">
+                    <ToastContainer theme="light"/>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />

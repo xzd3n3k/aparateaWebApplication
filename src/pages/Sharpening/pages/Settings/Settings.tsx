@@ -3,8 +3,7 @@ import React, { ReactElement, useState, ReactNode } from "react";
 import { arrowLeft, plus } from "../../../../images";
 import { Accounts } from "../index";
 import { Modal } from "../../../../components";
-import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 import api from "../../../../api";
 
 export default function Settings(): ReactElement {
@@ -237,7 +236,6 @@ export default function Settings(): ReactElement {
                 <label className="btn btn-outline-primary" htmlFor="btncheck4">Objednávky</label>
             </div>
             {renderComponent()}
-            <ToastContainer theme="light" />
         </div>
     )
 }

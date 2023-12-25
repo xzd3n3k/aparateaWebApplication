@@ -5,8 +5,7 @@ import TAccount from "../../../../TAccount";
 import { x, pencil } from "../../../../images";
 import React from "react";
 import { Modal } from "../../../../components";
-import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 
 export default function Accounts(): ReactElement {
 
@@ -123,7 +122,6 @@ export default function Accounts(): ReactElement {
                 ))}
                 </tbody>
             </table>
-            <ToastContainer theme="light" />
         </div>
     )
 }
