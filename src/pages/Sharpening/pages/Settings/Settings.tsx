@@ -152,6 +152,7 @@ export default function Settings(): ReactElement {
                 const response = await fetch(`${api}/register`, {
                     method: 'POST',
                     headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -178,6 +179,8 @@ export default function Settings(): ReactElement {
                         toast.success(`Uživatelský účet vytvořen`);
                     }
 
+                } else if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
                 } else {
                     toast.error("Chyba při vytváření účtu!");
                 }
