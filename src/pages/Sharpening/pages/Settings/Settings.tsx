@@ -86,7 +86,7 @@ export default function Settings(): ReactElement {
     const [password, setPassword] = useState<string>('');
 
     const btnBody: ReactNode =
-        <div className="d-flex flex-column gap-3">
+        <form id="create-account-form" className="d-flex flex-column gap-3">
             <span className="d-flex flex-row gap-3">
                 <label className="form-label">Generate random acc</label>
                 <input type="checkbox" id="genRandom" name="genRandom" className="form-check-input" defaultChecked={false}
@@ -113,7 +113,7 @@ export default function Settings(): ReactElement {
             <input onChange={event => setEmail(event.target.value)} disabled={generateRandom} type="email" className="form-control" placeholder="Email" />
             <input onChange={event => setPhone(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Mobil (volitelné)" />
             <input onChange={event => setPassword(event.target.value)} disabled={generateRandom} type="password" className="form-control" placeholder="Heslo" />
-        </div>
+        </form>
 
     const credentialsBody: ReactNode =
         <div>
@@ -184,7 +184,8 @@ export default function Settings(): ReactElement {
                 } else {
                     toast.error("Chyba při vytváření účtu!");
                 }
-
+                const formVar: HTMLFormElement = document.getElementById('create-account-form') as HTMLFormElement;
+                formVar.reset();
                 setShowModal(false);
                 break;
             case "customers":

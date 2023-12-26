@@ -66,6 +66,59 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         }
     };
 
+    const editUser = async (id: number) => {
+        try {
+            const response = await fetch(`${api}/editUser?id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "password": password,
+                    "email": email,
+                    "first_name": firstName,
+                    "last_name": lastName,
+                    "username": username,
+                    "phone": phone
+                }),
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                else if (response.status === 206) {
+                    toast.error("Některá povinně vyplnitelná pole jsou nevyplněna!")
+                }
+                else if (response.status === 304) {
+                    toast.error("Účet s tímto emailem již existuje!")
+                }
+                return;
+            }
+
+            const result = await response.json();
+            if (result) {
+                if (result.status_code === 401) {
+                    window.location.href = "/sharpening/login";
+                } else if (result.status_code === 206) {
+                    toast.error("Některá povinně vyplnitelná pole jsou nevyplněna!");
+                } else if (result.status_code === 304) {
+                    toast.error("Účet s tímto emailem již existuje!");
+                } else {
+                    toast.error(`Server odpověděl kódem: ${result.status_code}. Kontaktujte administrátora pro více informací.`);
+                }
+            } else {
+                toast.success(`Změny uloženy`);
+            }
+
+            fetchData();
+
+        } catch (error) {
+            console.error('Error editing user:', error);
+        }
+    };
+
     const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState<TAccount>();
@@ -91,19 +144,6 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         setSelectedUserId(0);
     };
 
-    const openEdit = (user: TAccount) => {
-        setSelectedAccount(user);
-        setShowEditModal(true);
-    };
-
-    const closeEditModal = () => {
-        setShowEditModal(false);
-    }
-
-    const confirmEditModal = (numb: number) => {
-        toast.success(`Změny uloženy`);
-    }
-
     const [username, setUsername] = useState<string>("");
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
@@ -111,8 +151,39 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
     const [phone, setPhone] = useState<string>("");
     const [password, setPassword] = useState<string>('');
 
+    const openEdit = (user: TAccount) => {
+        setSelectedAccount(user);
+        setEmail(user.email);
+        setUsername(user.username);
+        setPhone(user.phone);
+        setFirstName(user.first_name);
+        setLastName(user.last_name);
+        setPassword('');
+        setShowEditModal(true);
+    };
+
+    const closeEditModal = () => {
+        setShowEditModal(false);
+    }
+
+    const confirmEditModal = () => {
+        if  (selectedAccount) {
+            editUser(selectedAccount.id);
+            const formVar: HTMLFormElement = document.getElementById('edit-user-form') as HTMLFormElement;
+            formVar.reset();
+            setShowEditModal(false);
+            setSelectedAccount(undefined);
+            setEmail('');
+            setUsername('');
+            setPhone('');
+            setFirstName('');
+            setLastName('');
+            setPassword('');
+        }
+    }
+
     const btnBody: ReactNode =
-        <div className="d-flex flex-column gap-3">
+        <form id="edit-user-form" className="d-flex flex-column gap-3">
             <div className="d-flex flex-column gap-1">
                 <label>Uživatelské jméno</label>
                 <input defaultValue={selectedAccount?.username} onChange={event => setUsername(event.target.value)} type="text" className="form-control" placeholder="Uživatelské jméno (volitelné)" />
@@ -137,13 +208,13 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
                 <label>Nové heslo</label>
                 <input onChange={event => setPassword(event.target.value)} type="password" className="form-control" placeholder="Nové heslo" />
             </div>
-        </div>
+        </form>
 
 
     return (
         <div>
             <Modal isOpen={showModal} handleClose={closeModal} handleConfirm={confirmModal} title="Smazat" body={<p>{`Opravdu si přejete smazat uživatele ${selectedUserEmail}?`}</p>} confirmButtonText="Smazat" buttonColor="btn-danger" />
-            <Modal isOpen={showEditModal} handleClose={closeEditModal} handleConfirm={() => confirmEditModal(2)} title="Upravit" body={btnBody} confirmButtonText="Uložit" buttonColor="btn-primary" />
+            <Modal isOpen={showEditModal} handleClose={closeEditModal} handleConfirm={confirmEditModal} title="Upravit" body={btnBody} confirmButtonText="Uložit" buttonColor="btn-primary" />
             <table className="table table-hover">
                 <thead>
                 <tr>
