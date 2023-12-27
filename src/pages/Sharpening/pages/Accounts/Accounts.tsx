@@ -182,6 +182,15 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         }
     }
 
+    const selectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const checkboxes: NodeListOf<HTMLInputElement> | null = document.getElementsByName('row-check') as NodeListOf<HTMLInputElement>;
+        if(checkboxes) {
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = event.target.checked;
+            })
+        }
+    }
+
     const btnBody: ReactNode =
         <form id="edit-user-form" className="d-flex flex-column gap-3">
             <div className="d-flex flex-column gap-1">
@@ -218,6 +227,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
             <table className="table table-hover">
                 <thead>
                 <tr>
+                    <th><input type="checkbox" className="form-check-input" onChange={(event => {selectAll(event)})} /></th>
                     <th>Uživatelské jméno</th>
                     <th>Email</th>
                     <th>Jméno</th>
@@ -230,6 +240,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
                 <tbody>
                 {users?.map((user: TAccount) => (
                     <tr className="cursor-pointer" key={user.id}>
+                        <td><input id="row-check" name="row-check" type="checkbox" className="form-check-input" /></td>
                         <td>{user.username}</td>
                         <td>{user.email}</td>
                         <td>{user.first_name}</td>
