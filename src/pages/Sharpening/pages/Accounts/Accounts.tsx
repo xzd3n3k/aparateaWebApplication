@@ -1,5 +1,5 @@
 import './Accounts.scss';
-import react, {ReactElement, ReactNode, useEffect, useState} from "react";
+import {ReactElement, ReactNode, useEffect, useState} from "react";
 import api from "../../../../api";
 import TAccount from "../../../../TAccount";
 import { x, pencil } from "../../../../images";
@@ -154,8 +154,19 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
     const openEdit = (user: TAccount) => {
         setSelectedAccount(user);
         setEmail(user.email);
-        setUsername(user.username);
-        setPhone(user.phone);
+
+        if (user.username === null) {
+            setUsername('');
+        } else {
+            setUsername(user.phone);
+        }
+
+        if (user.phone === null) {
+            setPhone('');
+        } else {
+            setPhone(user.phone);
+        }
+
         setFirstName(user.first_name);
         setLastName(user.last_name);
         setPassword('');
@@ -191,31 +202,55 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         }
     }
 
+    function handleUsernameInput(event: React.ChangeEvent<HTMLInputElement>) {
+        setUsername(event.target.value);
+    }
+
+    function handleFirstNameInput(event: React.ChangeEvent<HTMLInputElement>) {
+        setFirstName(event.target.value);
+    }
+
+    function handleLastNameInput(event: React.ChangeEvent<HTMLInputElement>) {
+        setLastName(event.target.value);
+    }
+
+    function handleEmailInput(event: React.ChangeEvent<HTMLInputElement>) {
+        setEmail(event.target.value);
+    }
+
+    function handlePhoneInput(event: React.ChangeEvent<HTMLInputElement>) {
+        setPhone(event.target.value);
+    }
+
+    function handlePasswordInput(event: React.ChangeEvent<HTMLInputElement>) {
+        setPassword(event.target.value);
+    }
+
     const btnBody: ReactNode =
         <form id="edit-user-form" className="d-flex flex-column gap-3">
             <div className="d-flex flex-column gap-1">
                 <label>Uživatelské jméno</label>
-                <input defaultValue={selectedAccount?.username} onChange={event => setUsername(event.target.value)} type="text" className="form-control" placeholder="Uživatelské jméno (volitelné)" />
+                <input defaultValue={selectedAccount?.username} onInput={handleUsernameInput} type="text" className="form-control" placeholder="Uživatelské jméno (volitelné)" />
             </div>
             <div className="d-flex flex-column gap-1">
                 <label>Jméno</label>
-                <input defaultValue={selectedAccount?.first_name} onChange={event => setFirstName(event.target.value)} type="text" className="form-control" placeholder="Jméno" />
+                <input defaultValue={selectedAccount?.first_name} onInput={handleFirstNameInput} type="text" className="form-control" placeholder="Jméno" />
             </div>
             <div className="d-flex flex-column gap-1">
                 <label>Příjmení</label>
-                <input defaultValue={selectedAccount?.last_name} onChange={event => setLastName(event.target.value)} type="text" className="form-control" placeholder="Příjmení" />
+                <input defaultValue={selectedAccount?.last_name} onInput={handleLastNameInput} type="text" className="form-control" placeholder="Příjmení" />
             </div>
             <div className="d-flex flex-column gap-1">
                 <label>Email</label>
-                <input defaultValue={selectedAccount?.email} onChange={event => setEmail(event.target.value)} type="email" className="form-control" placeholder="Email" />
+                <input defaultValue={selectedAccount?.email} onInput={handleEmailInput} type="email" className="form-control" placeholder="Email" />
             </div>
             <div className="d-flex flex-column gap-1">
                 <label>Mobil</label>
-                <input defaultValue={selectedAccount?.phone} onChange={event => setPhone(event.target.value)} type="text" className="form-control" placeholder="Mobil (volitelné)" />
+                <input defaultValue={selectedAccount?.phone} onInput={handlePhoneInput} type="text" className="form-control" placeholder="Mobil (volitelné)" />
             </div>
             <div className="d-flex flex-column gap-1">
                 <label>Nové heslo</label>
-                <input onChange={event => setPassword(event.target.value)} type="password" className="form-control" placeholder="Nové heslo" />
+                <input onInput={handlePasswordInput} type="password" className="form-control" placeholder="Nové heslo" />
             </div>
         </form>
 
