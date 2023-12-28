@@ -25,8 +25,12 @@ export default function Login(): ReactElement {
             localStorage.setItem('token', result.access_token);
             localStorage.setItem('token_expires', result.expires);
             window.location.href = "/sharpening/records";
-        } else {
+        } else if (response.status === 423) {
+            toast.error("Účet nebyl aktivován!");
+        } else if (response.status === 401) {
             toast.error("Špatné přihlašovací údaje!");
+        } else {
+            toast.error("Nastala neočekávaná chyba, obnovte stránku a zkuste to znovu, nebo kontaktuje administrátora!");
         }
     }
 
