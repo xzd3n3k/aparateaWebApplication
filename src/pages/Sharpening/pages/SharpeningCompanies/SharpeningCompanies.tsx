@@ -2,7 +2,6 @@ import React, {ReactElement, ReactNode, useEffect, useState} from "react";
 import {Modal} from "../../../../components";
 import {pencil, x} from "../../../../images";
 import TSharpeningCompany from "../../../../TSharpeningCompany";
-import TAccount from "../../../../TAccount";
 import api from "../../../../api";
 import {toast} from "react-toastify";
 
