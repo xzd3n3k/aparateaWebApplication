@@ -14,6 +14,17 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
 
     const [sharpeningCompanies, setSharpeningCompanies] = useState(Array<TSharpeningCompany>);
 
+    const [showModal, setShowModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const [selectedCompanies, setSelectedCompanies] = useState<number[]>([]);
+    const [selectedCompany, setSelectedCompany] = useState<TSharpeningCompany>();
+    const [selectedCompanyName, setSelectedCompanyName] = useState('');
+    const [selectedCompanyId, setSelectedCompanyId] = useState(0);
+
+    const [name, setName] = useState<string>('');
+    const [note, setNote] = useState<string>('');
+
     const fetchData = async () => {
         try {
             const response = await fetch(`${api}/sharpeningCompanies`, {
@@ -66,6 +77,35 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
         }
     };
 
+    const deleteSelected = async () => {
+
+        try {
+            const response = await fetch(`${api}/deleteSharpeningCompanies`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedCompanies)
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                return;
+            } else {
+                setSelectedCompanies([]);
+                toast.success('Vybrané brusírny byly úspěšně smazány');
+            }
+
+            fetchData();
+
+        } catch (error) {
+            console.error('Error deleting sharpening companies:', error);
+        }
+    };
+
     const editSharpeningCompany = async (id: number) => {
         try {
             const response = await fetch(`${api}/editSharpeningCompany?id=${id}`, {
@@ -115,12 +155,6 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
         }
     };
 
-    const [showModal, setShowModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [selectedCompany, setSelectedCompany] = useState<TSharpeningCompany>();
-    const [selectedCompanyName, setSelectedCompanyName] = useState('');
-    const [selectedCompanyId, setSelectedCompanyId] = useState(0);
-
     const openModal = (companyName: string, companyId: number) => {
         setShowModal(true);
         setSelectedCompanyName(companyName);
@@ -139,9 +173,6 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
         setSelectedCompanyName('');
         setSelectedCompanyId(0);
     };
-
-    const [name, setName] = useState<string>('');
-    const [note, setNote] = useState<string>('');
 
     const openEdit = (company: TSharpeningCompany) => {
         setSelectedCompany(company);
@@ -172,10 +203,6 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
         }
     }
 
-
-    const [selectedCompanies, setSelectedCompanies] = useState<number[]>([]);
-
-
     const selectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         if (event.target.checked) {
@@ -201,36 +228,6 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
                 return prevState.filter(id => id !== Number(event.target.value));
             }
         });
-    };
-
-
-    const deleteSelected = async () => {
-
-        try {
-            const response = await fetch(`${api}/deleteSharpeningCompanies`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(selectedCompanies)
-            });
-
-            if (!response.ok) {
-                if (response.status === 401) {
-                    window.location.href = "/sharpening/login";
-                }
-                return;
-            } else {
-                setSelectedCompanies([]);
-                toast.success('Vybrané brusírny byly úspěšně smazány');
-            }
-
-            fetchData();
-
-        } catch (error) {
-            console.error('Error deleting sharpening companies:', error);
-        }
     };
 
     function handleNameInput(event: React.ChangeEvent<HTMLInputElement>) {

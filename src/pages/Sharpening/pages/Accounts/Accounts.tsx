@@ -15,6 +15,21 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
 
     const [users, setUsers] = useState(Array<TAccount>);
 
+    const [showModal, setShowModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const [selectedAccounts, setSelectedAccounts] = useState<number[]>([]);
+    const [selectedAccount, setSelectedAccount] = useState<TAccount>();
+    const [selectedUserEmail, setSelectedUserEmail] = useState('');
+    const [selectedUserId, setSelectedUserId] = useState(0);
+
+    const [username, setUsername] = useState<string>('');
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+
     const fetchData = async () => {
         try {
             const response = await fetch(`${api}/users`, {
@@ -63,6 +78,35 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
 
         } catch (error) {
             console.error('Error deleting user:', error);
+        }
+    };
+
+    const deleteSelected = async () => {
+
+        try {
+            const response = await fetch(`${api}/deleteUsers`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedAccounts)
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                return;
+            } else {
+                setSelectedAccounts([]);
+                toast.success('Vybrané účty byly úspěšně smazány');
+            }
+
+            fetchData();
+
+        } catch (error) {
+            console.error('Error deleting users:', error);
         }
     };
 
@@ -119,12 +163,6 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         }
     };
 
-    const [showModal, setShowModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [selectedAccount, setSelectedAccount] = useState<TAccount>();
-    const [selectedUserEmail, setSelectedUserEmail] = useState('');
-    const [selectedUserId, setSelectedUserId] = useState(0);
-
     const openModal = (userEmail: string, userId: number) => {
         setShowModal(true);
         setSelectedUserEmail(userEmail);
@@ -143,13 +181,6 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         setSelectedUserEmail('');
         setSelectedUserId(0);
     };
-
-    const [username, setUsername] = useState<string>('');
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [phone, setPhone] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
 
     const openEdit = (user: TAccount) => {
         setSelectedAccount(user);
@@ -193,10 +224,6 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         }
     }
 
-
-    const [selectedAccounts, setSelectedAccounts] = useState<number[]>([]);
-
-
     const selectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         if (event.target.checked) {
@@ -222,36 +249,6 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
                 return prevState.filter(id => id !== Number(event.target.value));
             }
         });
-    };
-
-
-    const deleteSelected = async () => {
-
-        try {
-            const response = await fetch(`${api}/deleteUsers`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(selectedAccounts)
-            });
-
-            if (!response.ok) {
-                if (response.status === 401) {
-                    window.location.href = "/sharpening/login";
-                }
-                return;
-            } else {
-                setSelectedAccounts([]);
-                toast.success('Vybrané účty byly úspěšně smazány');
-            }
-
-            fetchData();
-
-        } catch (error) {
-            console.error('Error deleting users:', error);
-        }
     };
 
     function handleUsernameInput(event: React.ChangeEvent<HTMLInputElement>) {
