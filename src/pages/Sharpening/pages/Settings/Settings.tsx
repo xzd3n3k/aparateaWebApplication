@@ -1,17 +1,32 @@
 import './Settings.scss';
 import React, { ReactElement, useState, ReactNode } from "react";
 import { arrowLeft, plus } from "../../../../images";
-import { Accounts } from "../index";
+import {Accounts, Companies, SharpeningCompanies} from "../index";
 import { Modal } from "../../../../components";
 import { toast } from "react-toastify";
 import api from "../../../../api";
-import SharpeningCompanies from "../SharpeningCompanies/SharpeningCompanies";
 
 export default function Settings(): ReactElement {
     const [updateUsers, setUpdateUsers] = useState(false);
     const [updateSharpeningCompanies, setUpdateSharpeningCompanies] = useState(false);
+    const [updateCompanies, setUpdateCompanies] = useState(false);
+
     const [showModal, setShowModal] = useState(false);
     const [showCredentials, setShowCredentials] = useState(false);
+
+    const [selectedOption, setSelectedOption] = useState("users");
+
+    const [generateRandom, setGenerateRandom] = useState(false);
+
+    const [username, setUsername] = useState<string>("");
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [phone, setPhone] = useState<string>("");
+    const [password, setPassword] = useState<string>('');
+
+    const [name, setName] = useState<string>('');
+    const [note, setNote] = useState<string>("");
 
     const openModal = () => {
         setShowModal(true);
@@ -20,8 +35,6 @@ export default function Settings(): ReactElement {
     const closeModal = () => {
         setShowModal(false);
     };
-
-    const [selectedOption, setSelectedOption] = useState("users");
 
     const modalTitle: () => string = () => {
         switch (selectedOption) {
@@ -81,18 +94,6 @@ export default function Settings(): ReactElement {
 
         return result;
     }
-
-    const [generateRandom, setGenerateRandom] = useState(false);
-
-    const [username, setUsername] = useState<string>("");
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [phone, setPhone] = useState<string>("");
-    const [password, setPassword] = useState<string>('');
-
-    const [name, setName] = useState<string>('');
-    const [note, setNote] = useState<string>("");
 
     const btnBody: ReactNode =
         selectedOption === "users" ? (
@@ -264,7 +265,7 @@ export default function Settings(): ReactElement {
             case "sharpeningCompanies":
                 return <SharpeningCompanies updateRecords={updateSharpeningCompanies}/>;
             case "customers":
-                return 'zakaznici';
+                return <Companies updateRecords={updateCompanies} />;
             case "tools":
                 return 'naradi';
             case "orders":
