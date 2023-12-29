@@ -28,6 +28,19 @@ export default function Settings(): ReactElement {
     const [name, setName] = useState<string>('');
     const [note, setNote] = useState<string>("");
 
+    const [companyName, setCompanyName] = useState<string>('');
+    const [companyEmail, setCompanyEmail] = useState<string>('');
+    const [companyState, setCompanyState] = useState<string>('');
+    const [companyTown, setCompanyTown] = useState<string>('');
+    const [companyStreet, setCompanyStreet] = useState<string>('');
+    const [companyCisloPopisne, setCompanyCisloPopisne] = useState<string>('');
+    const [companyPsc, setCompanyPsc] = useState<string>('');
+    const [companyPhone, setCompanyPhone] = useState<string>('');
+    const [companyIc, setCompanyIc] = useState<string>('');
+    const [companyDic, setCompanyDic] = useState<string>('');
+    const [companyExecutive, setCompanyExecutive] = useState<string>('');
+    const [companyNote, setCompanyNote] = useState<string>('');
+
     const openModal = () => {
         setShowModal(true);
     };
@@ -130,7 +143,22 @@ export default function Settings(): ReactElement {
                     <input onChange={event => setName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Název" />
                     <input onChange={event => setNote(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
                 </form>
-        ) :
+        ) : selectedOption === "customers" ? (
+                <form id="create-company-form" className="d-flex flex-column gap-3">
+                    <input onChange={event => setCompanyName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Název" />
+                    <input onChange={event => setCompanyEmail(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Email" />
+                    <input onChange={event => setCompanyState(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Stát (volitelné)" />
+                    <input onChange={event => setCompanyTown(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Město (volitelné)" />
+                    <input onChange={event => setCompanyStreet(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Ulice (volitelné)" />
+                    <input onChange={event => setCompanyCisloPopisne(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="č.p (volitelné)" />
+                    <input onChange={event => setCompanyPsc(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="PSČ (volitelné)" />
+                    <input onChange={event => setCompanyPhone(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Mobil (volitelné)" />
+                    <input onChange={event => setCompanyIc(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="IČ (volitelné)" />
+                    <input onChange={event => setCompanyDic(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="DIČ (volitelné)" />
+                    <input onChange={event => setCompanyExecutive(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Ředitel (volitelné)" />
+                    <input onChange={event => setCompanyNote(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
+                </form>
+            ) :
             <div>ostatni</div>
     ;
 
@@ -242,7 +270,46 @@ export default function Settings(): ReactElement {
                 setShowModal(false);
                 break;
             case "customers":
-                toast.success(`Zákazník úspěšně přidán`);
+                const companiesResponse = await fetch(`${api}/createCompany`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "name": companyName,
+                        "email": companyEmail,
+                        "state": companyState,
+                        "town": companyTown,
+                        "street": companyStreet,
+                        "cislo_popisne": companyCisloPopisne,
+                        "psc": companyPsc,
+                        "phone": companyPhone,
+                        "ic": companyIc,
+                        "dic": companyDic,
+                        "executive": companyExecutive,
+                        "note": companyNote
+                    }),
+                });
+
+                const companiesResult = await companiesResponse.json();
+
+                if (companiesResponse.status === 200) {
+                    if (companiesResult === 'Company already exists!') {
+                        toast.error('Zákazník již existuje!');
+
+                    } else {
+                        setUpdateCompanies(!updateCompanies);
+                        toast.success(`Zákazník úspěšně přidán`);
+                    }
+
+                } else if (companiesResponse.status === 401) {
+                    window.location.href = "/sharpening/login";
+                } else {
+                    toast.error("Chyba při vytváření zákazníka!");
+                }
+                const companyForm: HTMLFormElement = document.getElementById('create-company-form') as HTMLFormElement;
+                companyForm.reset();
                 setShowModal(false);
                 break;
             case "tools":
