@@ -4,13 +4,16 @@ import Select from 'react-select';
 import { gear } from "../../../../images";
 import TSharpeningCompany from "../../../../TSharpeningCompany";
 import api from "../../../../api";
+import TCompany from "../../../../TCompany";
 
 
 export default function Records(): ReactElement {
 
     const [sharpeningCompanies, setSharpeningCompanies] = useState(Array<TSharpeningCompany>);
+    const [companies, setCompanies] = useState(Array<TCompany>);
 
-    const fetchData = async () => {
+
+    const fetchSharpeningCompanies = async () => {
         try {
             const response = await fetch(`${api}/sharpeningCompanies`, {
                 method: 'GET',
@@ -34,8 +37,33 @@ export default function Records(): ReactElement {
         }
     };
 
+    const fetchCompanies = async () => {
+        try {
+            const response = await fetch(`${api}/companies`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                return;
+            }
+
+            const result = await response.json();
+            setCompanies(result);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
-        fetchData();
+        fetchSharpeningCompanies();
+        fetchCompanies();
     }, [])
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -50,6 +78,11 @@ export default function Records(): ReactElement {
     const transformedSharpeningCompanies = sharpeningCompanies.map(option => ({
         value: option.id,
         label: option.name,
+    }));
+
+    const transformedCompanies = companies.map(company => ({
+        value: company.id,
+        label: company.name,
     }));
 
     return (
@@ -70,7 +103,7 @@ export default function Records(): ReactElement {
                     </span>
                     <span className="w-50">
                         <label>Zákazník</label>
-                        <Select options={options} placeholder="Vyberte..." />
+                        <Select options={transformedCompanies} placeholder="Vyberte..." />
                     </span>
                     <span className="w-50">
                         <label>Nástroj</label>
