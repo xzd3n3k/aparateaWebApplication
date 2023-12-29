@@ -5,9 +5,11 @@ import { Accounts } from "../index";
 import { Modal } from "../../../../components";
 import { toast } from "react-toastify";
 import api from "../../../../api";
+import SharpeningCompanies from "../SharpeningCompanies/SharpeningCompanies";
 
 export default function Settings(): ReactElement {
     const [updateUsers, setUpdateUsers] = useState(false);
+    const [updateSharpeningCompanies, setUpdateSharpeningCompanies] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showCredentials, setShowCredentials] = useState(false);
 
@@ -25,6 +27,8 @@ export default function Settings(): ReactElement {
         switch (selectedOption) {
             case "users":
                 return 'Vytvořit uživatelský účet'
+            case "sharpeningCompanies":
+                return 'Přidat brusírnu'
             case "customers":
                 return 'Přidat zákazníka'
             case "tools":
@@ -40,6 +44,8 @@ export default function Settings(): ReactElement {
         switch (selectedOption) {
             case "users":
                 return 'Vytvořit'
+            case "sharpeningCompanies":
+                return 'Přidat'
             case "customers":
                 return 'Přidat'
             case "tools":
@@ -85,8 +91,12 @@ export default function Settings(): ReactElement {
     const [phone, setPhone] = useState<string>("");
     const [password, setPassword] = useState<string>('');
 
+    const [name, setName] = useState<string>('');
+    const [note, setNote] = useState<string>("");
+
     const btnBody: ReactNode =
-        <form id="create-account-form" className="d-flex flex-column gap-3">
+        selectedOption === "users" ? (
+            <form id="create-account-form" className="d-flex flex-column gap-3">
             <span className="d-flex flex-row gap-3">
                 <label className="form-label">Generate random acc</label>
                 <input type="checkbox" id="genRandom" name="genRandom" className="form-check-input" defaultChecked={false}
@@ -107,13 +117,22 @@ export default function Settings(): ReactElement {
                            });
                        }} />
             </span>
-            <input onChange={event => setUsername(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Uživatelské jméno (volitelné)" />
-            <input onChange={event => setFirstName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Jméno" />
-            <input onChange={event => setLastName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Příjmení" />
-            <input onChange={event => setEmail(event.target.value)} disabled={generateRandom} type="email" className="form-control" placeholder="Email" />
-            <input onChange={event => setPhone(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Mobil (volitelné)" />
-            <input onChange={event => setPassword(event.target.value)} disabled={generateRandom} type="password" className="form-control" placeholder="Heslo" />
-        </form>
+                <input onChange={event => setUsername(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Uživatelské jméno (volitelné)" />
+                <input onChange={event => setFirstName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Jméno" />
+                <input onChange={event => setLastName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Příjmení" />
+                <input onChange={event => setEmail(event.target.value)} disabled={generateRandom} type="email" className="form-control" placeholder="Email" />
+                <input onChange={event => setPhone(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Mobil (volitelné)" />
+                <input onChange={event => setPassword(event.target.value)} disabled={generateRandom} type="password" className="form-control" placeholder="Heslo" />
+            </form>
+        ) : selectedOption === "sharpeningCompanies" ? (
+                <form id="create-sharpening-company-form" className="d-flex flex-column gap-3">
+                    <input onChange={event => setName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Název" />
+                    <input onChange={event => setNote(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
+                </form>
+        ) :
+            <div>ostatni</div>
+    ;
+
 
     const credentialsBody: ReactNode =
         <div>
@@ -188,6 +207,39 @@ export default function Settings(): ReactElement {
                 formVar.reset();
                 setShowModal(false);
                 break;
+            case "sharpeningCompanies":
+                const sharpeningCompResponse = await fetch(`${api}/createSharpeningCompany`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "name": name,
+                        "note": note
+                    }),
+                });
+
+                const sharpeningCompResult = await sharpeningCompResponse.json();
+
+                if (sharpeningCompResponse.status === 200) {
+                    if (sharpeningCompResult === 'Sharpening company already exists!') {
+                        toast.error('Brusírna již existuje!');
+
+                    } else {
+                        setUpdateSharpeningCompanies(!updateSharpeningCompanies);
+                        toast.success("Brusírna úspěšně přidána");
+                    }
+
+                } else if (sharpeningCompResponse.status === 401) {
+                    window.location.href = "/sharpening/login";
+                } else {
+                    toast.error("Chyba při vytváření brusírny!");
+                }
+                const sharpeningCompanyForm: HTMLFormElement = document.getElementById('create-sharpening-company-form') as HTMLFormElement;
+                sharpeningCompanyForm.reset();
+                setShowModal(false);
+                break;
             case "customers":
                 toast.success(`Zákazník úspěšně přidán`);
                 setShowModal(false);
@@ -209,6 +261,8 @@ export default function Settings(): ReactElement {
         switch (selectedOption) {
             case "users":
                 return <Accounts updateUsers={updateUsers} />;
+            case "sharpeningCompanies":
+                return <SharpeningCompanies updateRecords={updateSharpeningCompanies}/>;
             case "customers":
                 return 'zakaznici';
             case "tools":
@@ -237,14 +291,17 @@ export default function Settings(): ReactElement {
                 <input defaultChecked={true} type="radio" name="option" className="btn-check" id="btncheck1" autoComplete="off" onChange={() => setSelectedOption("users")} />
                 <label className="btn btn-outline-primary" htmlFor="btncheck1">Uživatelské účty</label>
 
-                <input type="radio" name="option" className="btn-check" id="btncheck2" autoComplete="off" onChange={() => setSelectedOption("customers")} />
-                <label className="btn btn-outline-primary" htmlFor="btncheck2">Zákazníci</label>
+                <input type="radio" name="option" className="btn-check" id="btncheck2" autoComplete="off" onChange={() => setSelectedOption("sharpeningCompanies")} />
+                <label className="btn btn-outline-primary" htmlFor="btncheck2">Brusírny</label>
 
-                <input type="radio" name="option" className="btn-check" id="btncheck3" autoComplete="off" onChange={() => setSelectedOption("tools")} />
-                <label className="btn btn-outline-primary" htmlFor="btncheck3">Nástroje</label>
+                <input type="radio" name="option" className="btn-check" id="btncheck3" autoComplete="off" onChange={() => setSelectedOption("customers")} />
+                <label className="btn btn-outline-primary" htmlFor="btncheck3">Zákazníci</label>
 
-                <input type="radio" name="option" className="btn-check" id="btncheck4" autoComplete="off" onChange={() => setSelectedOption("orders")} disabled/>
-                <label className="btn btn-outline-primary" htmlFor="btncheck4">Objednávky</label>
+                <input type="radio" name="option" className="btn-check" id="btncheck4" autoComplete="off" onChange={() => setSelectedOption("tools")} />
+                <label className="btn btn-outline-primary" htmlFor="btncheck4">Nástroje</label>
+
+                <input type="radio" name="option" className="btn-check" id="btncheck5" autoComplete="off" onChange={() => setSelectedOption("orders")} disabled/>
+                <label className="btn btn-outline-primary" htmlFor="btncheck5">Objednávky</label>
             </div>
             {renderComponent()}
         </div>
