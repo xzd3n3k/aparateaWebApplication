@@ -144,11 +144,11 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         setSelectedUserId(0);
     };
 
-    const [username, setUsername] = useState<string>("");
+    const [username, setUsername] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-    const [phone, setPhone] = useState<string>("");
+    const [phone, setPhone] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
     const openEdit = (user: TAccount) => {
@@ -158,7 +158,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         if (user.username === null) {
             setUsername('');
         } else {
-            setUsername(user.phone);
+            setUsername(user.username);
         }
 
         if (user.phone === null) {
@@ -193,7 +193,18 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         }
     }
 
+
+    const [selectedAccounts, setSelectedAccounts] = useState<number[]>([]);
+
+
     const selectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        if (event.target.checked) {
+            setSelectedAccounts(users.map(user => user.id));
+        } else {
+            setSelectedAccounts([]);
+        }
+
         const checkboxes: NodeListOf<HTMLInputElement> | null = document.getElementsByName('row-check') as NodeListOf<HTMLInputElement>;
         if(checkboxes) {
             checkboxes.forEach((checkbox) => {
@@ -201,6 +212,47 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
             })
         }
     }
+
+
+    const selectThis = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedAccounts((prevState) => {
+            if (event.target.checked) {
+                return [...prevState, Number(event.target.value)];
+            } else {
+                return prevState.filter(id => id !== Number(event.target.value));
+            }
+        });
+    };
+
+
+    const deleteSelected = async () => {
+
+        try {
+            const response = await fetch(`${api}/deleteUsers`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedAccounts)
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                return;
+            } else {
+                setSelectedAccounts([]);
+                toast.success('Vybrané účty byly úspěšně smazány');
+            }
+
+            fetchData();
+
+        } catch (error) {
+            console.error('Error deleting users:', error);
+        }
+    };
 
     function handleUsernameInput(event: React.ChangeEvent<HTMLInputElement>) {
         setUsername(event.target.value);
@@ -269,13 +321,17 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
                     <th>Příjmení</th>
                     <th>Mobil</th>
                     <th>Firma</th>
-                    <th></th>
+                    <th className="d-flex flex-row justify-content-end">
+                        <button disabled={selectedAccounts.length < 1} className="btn btn-light" onClick={deleteSelected}>
+                            <img src={x} alt="Delete" width="24" height="24" />
+                        </button>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 {users?.map((user: TAccount) => (
                     <tr className="cursor-pointer" key={user.id}>
-                        <td><input id="row-check" name="row-check" type="checkbox" className="form-check-input" /></td>
+                        <td><input value={user.id} id="row-check" name="row-check" type="checkbox" className="form-check-input" onChange={(event) => {selectThis(event)}} /></td>
                         <td>{user.username}</td>
                         <td>{user.email}</td>
                         <td>{user.first_name}</td>
