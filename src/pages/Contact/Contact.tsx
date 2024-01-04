@@ -43,7 +43,7 @@ export default function Contact(): ReactElement {
                             <p>627 00 Brno-Slatina</p>
                             <p>Česká republika</p>
                         </div>
-                        <button  className={`${isTouchScreenDevice() ? 'navigate-btn-ionic' : 'navigate-btn-browser'}`}>Navigovat</button>
+                        <button onClick={handleNavigationClick} className={`${isTouchScreenDevice() ? 'navigate-btn-ionic' : 'navigate-btn-browser'}`}>Navigovat</button>
                     </div>
                 </div>
             </div>
