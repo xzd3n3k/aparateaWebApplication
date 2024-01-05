@@ -12,6 +12,9 @@ export default function Records(): ReactElement {
     const [sharpeningCompanies, setSharpeningCompanies] = useState(Array<TSharpeningCompany>);
     const [companies, setCompanies] = useState(Array<TCompany>);
 
+    const [menuIsOpen, setMenuIsOpen] = React.useState(false);
+    //const filteredOptions = inputValue.trim() === '' ? staticOptions : options; TODO use this when show eg top first 5 records and when user starts typing show filtered all opts
+
 
     const fetchSharpeningCompanies = async () => {
         try {
@@ -99,15 +102,23 @@ export default function Records(): ReactElement {
                 <form onSubmit={handleSubmit} className="d-flex flex-row gap-3 w-100 bg-body-secondary p-2 rounded">
                     <span className="w-25">
                         <label>Brusírna</label>
-                        <Select options={transformedSharpeningCompanies} placeholder="Vyberte..." />
+                        <Select options={transformedSharpeningCompanies} placeholder="Vyberte..." noOptionsMessage={() => "Nenalezeno"} />
                     </span>
                     <span className="w-50">
                         <label>Zákazník</label>
-                        <Select options={transformedCompanies} placeholder="Vyberte..." />
+                        <Select options={transformedCompanies}
+                                menuIsOpen={menuIsOpen}
+                                onInputChange={(inputValue, { action }) => {
+                                    setMenuIsOpen(action === 'input-change' && inputValue.trim() !== '');
+                                }}
+                                onBlur={() => setMenuIsOpen(false)}
+                                placeholder="Vyberte..."
+                                noOptionsMessage={() => "Nenalezeno"}
+                        />
                     </span>
                     <span className="w-50">
                         <label>Nástroj</label>
-                        <Select options={options} placeholder="Vyberte..." />
+                        <Select options={options} placeholder="Vyberte..." noOptionsMessage={() => "Nenalezeno"} />
                     </span>
                     <span className="w-25">
                         <label>Počet</label>
