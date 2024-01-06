@@ -1,11 +1,13 @@
 import './Accounts.scss';
-import {ReactElement, ReactNode, useEffect, useState} from "react";
+import {ReactElement, ReactNode, useEffect, useReducer, useState} from "react";
 import api from "../../../../api";
 import TAccount from "../../../../TAccount";
 import { x, pencil } from "../../../../images";
 import React from "react";
 import { Modal } from "../../../../components";
 import { toast } from "react-toastify";
+import TCompany from "../../../../TCompany";
+import Select, {ActionMeta, SingleValue} from "react-select";
 
 interface IProps {
     updateUsers: boolean;
@@ -13,7 +15,10 @@ interface IProps {
 
 export default function Accounts({updateUsers}: IProps): ReactElement {
 
+    const [modalKey, setModalKey] = useState(0);
+
     const [users, setUsers] = useState(Array<TAccount>);
+    const [companies, setCompanies] = useState(Array<TCompany>);
 
     const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -29,6 +34,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [companyId, setCompanyId] = useState<number>(0);
 
     const fetchData = async () => {
         try {
@@ -52,11 +58,37 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
+        try {
+            const response = await fetch(`${api}/companies`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                return;
+            }
+
+            const result = await response.json();
+            setCompanies(result);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     };
 
     useEffect(() => {
         fetchData();
     }, [updateUsers])
+
+    const transformedCompanies = companies.map(company => ({
+        value: company.id,
+        label: company.name,
+    }));
 
     const deleteUser = async (id: number) => {
         try {
@@ -124,7 +156,8 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
                     "first_name": firstName,
                     "last_name": lastName,
                     "username": username,
-                    "phone": phone
+                    "phone": phone,
+                    "company_id": companyId
                 }),
             });
 
@@ -184,6 +217,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
 
     const openEdit = (user: TAccount) => {
         setSelectedAccount(user);
+
         setEmail(user.email);
 
         if (user.username === null) {
@@ -198,13 +232,22 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
             setPhone(user.phone);
         }
 
+        if (user.linked_company) {
+            setCompanyId(user.linked_company.id);
+        } else {
+            setCompanyId(0);
+        }
+
         setFirstName(user.first_name);
         setLastName(user.last_name);
         setPassword('');
+        setModalKey((prevKey) => prevKey + 1);
         setShowEditModal(true);
     };
 
     const closeEditModal = () => {
+        const formVar: HTMLFormElement = document.getElementById('edit-user-form') as HTMLFormElement;
+        formVar.reset();
         setShowEditModal(false);
     }
 
@@ -221,6 +264,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
             setFirstName('');
             setLastName('');
             setPassword('');
+            setCompanyId(0);
         }
     }
 
@@ -275,6 +319,10 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
         setPassword(event.target.value);
     }
 
+    function handleCompanyIdInput(value: SingleValue<{label: string, value: number}>, action: ActionMeta<{label: string, value: number}>) {;
+        setCompanyId(Number(value?.value ?? 0));
+    }
+
     const btnBody: ReactNode =
         <form id="edit-user-form" className="d-flex flex-column gap-3">
             <div className="d-flex flex-column gap-1">
@@ -301,13 +349,28 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
                 <label>Nové heslo</label>
                 <input onInput={handlePasswordInput} type="password" className="form-control" placeholder="Nové heslo" />
             </div>
+            <div className="d-flex flex-column gap-1">
+                <label>Firma</label>
+                <Select
+                    placeholder="Firma"
+                    options={transformedCompanies}
+                    defaultValue={
+                        selectedAccount?.linked_company?.name && selectedAccount?.linked_company?.name.length > 0
+                            ? { label: selectedAccount?.linked_company?.name, value: selectedAccount?.linked_company?.id }
+                            : null
+                    }
+                    noOptionsMessage={() => "Nenalezeno"}
+                    isClearable={true}
+                    onChange={handleCompanyIdInput}
+                ></Select>
+            </div>
         </form>
 
 
     return (
         <div>
             <Modal isOpen={showModal} handleClose={closeModal} handleConfirm={confirmModal} title="Smazat" body={<p>{`Opravdu si přejete smazat uživatele ${selectedUserEmail}?`}</p>} confirmButtonText="Smazat" buttonColor="btn-danger" />
-            <Modal isOpen={showEditModal} handleClose={closeEditModal} handleConfirm={confirmEditModal} title="Upravit" body={btnBody} confirmButtonText="Uložit" buttonColor="btn-primary" />
+            <Modal key={modalKey} isOpen={showEditModal} handleClose={closeEditModal} handleConfirm={confirmEditModal} title="Upravit" body={btnBody} confirmButtonText="Uložit" buttonColor="btn-primary" />
             <table className="table table-hover">
                 <thead>
                 <tr>
@@ -334,7 +397,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
                         <td>{user.first_name}</td>
                         <td>{user.last_name}</td>
                         <td>{user.phone}</td>
-                        <td>{user.linked_company}</td>
+                        <td>{user.linked_company?.name}</td>
                         <td className="d-flex flex-row gap-3 justify-content-end">
                             <button className="btn btn-light" onClick={() => {openEdit(user)}}>
                                 <img src={pencil} alt="Edit" width="24" height="24" />

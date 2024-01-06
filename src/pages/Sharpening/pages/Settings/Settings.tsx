@@ -1,10 +1,12 @@
 import './Settings.scss';
-import React, { ReactElement, useState, ReactNode } from "react";
+import React, {ReactElement, useState, ReactNode, useEffect} from "react";
 import { arrowLeft, plus } from "../../../../images";
 import {Accounts, Companies, SharpeningCompanies} from "../index";
 import { Modal } from "../../../../components";
 import { toast } from "react-toastify";
 import api from "../../../../api";
+import TCompany from "../../../../TCompany";
+import Select from "react-select";
 
 export default function Settings(): ReactElement {
     const [updateUsers, setUpdateUsers] = useState(false);
@@ -24,6 +26,7 @@ export default function Settings(): ReactElement {
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>("");
     const [password, setPassword] = useState<string>('');
+    const [companyId, setCompanyId] = useState<number>(0);
 
     const [name, setName] = useState<string>('');
     const [note, setNote] = useState<string>("");
@@ -40,6 +43,44 @@ export default function Settings(): ReactElement {
     const [companyDic, setCompanyDic] = useState<string>('');
     const [companyExecutive, setCompanyExecutive] = useState<string>('');
     const [companyNote, setCompanyNote] = useState<string>('');
+
+    const [companies, setCompanies] = useState(Array<TCompany>);
+
+    const [menuIsOpen, setMenuIsOpen] = React.useState(false);
+
+
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`${api}/companies`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                return;
+            }
+
+            const result = await response.json();
+            setCompanies(result);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+    const transformedCompanies = companies.map(company => ({
+        value: company.id,
+        label: company.name,
+    }));
 
     const openModal = () => {
         setShowModal(true);
@@ -137,6 +178,17 @@ export default function Settings(): ReactElement {
                 <input onChange={event => setEmail(event.target.value)} disabled={generateRandom} type="email" className="form-control" placeholder="Email" />
                 <input onChange={event => setPhone(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Mobil (volitelné)" />
                 <input onChange={event => setPassword(event.target.value)} disabled={generateRandom} type="password" className="form-control" placeholder="Heslo" />
+                <Select options={transformedCompanies}
+                        menuIsOpen={menuIsOpen}
+                        onInputChange={(inputValue, { action }) => {
+                            setMenuIsOpen(action === 'input-change' && inputValue.trim() !== '');
+                        }}
+                        onBlur={() => setMenuIsOpen(false)}
+                        placeholder="Firma (volitelné)"
+                        noOptionsMessage={() => "Nenalezeno"}
+                        onChange={selectSelected => {if(selectSelected) {setCompanyId(selectSelected.value)} else {setCompanyId(0)} }}
+                        isDisabled={generateRandom}
+                />
             </form>
         ) : selectedOption === "sharpeningCompanies" ? (
                 <form id="create-sharpening-company-form" className="d-flex flex-column gap-3">
@@ -209,7 +261,8 @@ export default function Settings(): ReactElement {
                         "first_name": firstName,
                         "last_name": lastName,
                         "username": username,
-                        "phone": phone
+                        "phone": phone,
+                        "company_id": companyId
                     }),
                 });
 

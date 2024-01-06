@@ -188,6 +188,8 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
     };
 
     const closeEditModal = () => {
+        const formVar: HTMLFormElement = document.getElementById('edit-sharpening-company-form') as HTMLFormElement;
+        formVar.reset();
         setShowEditModal(false);
     }
 

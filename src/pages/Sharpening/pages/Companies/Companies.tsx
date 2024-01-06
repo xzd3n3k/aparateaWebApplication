@@ -85,6 +85,35 @@ export default function Companies({updateRecords}: IProps): ReactElement {
         }
     };
 
+    const deleteSelected = async () => {
+
+        try {
+            const response = await fetch(`${api}/deleteCompanies`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedCompanies)
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                return;
+            } else {
+                setSelectedCompanies([]);
+                toast.success('Vybraní zákaznící byli úspěšně smazány');
+            }
+
+            fetchData();
+
+        } catch (error) {
+            console.error('Error deleting companies:', error);
+        }
+    };
+
     const editCompany = async (id: number) => {
         try {
             const response = await fetch(`${api}/editCompany?id=${id}`, {
@@ -195,6 +224,8 @@ export default function Companies({updateRecords}: IProps): ReactElement {
     };
 
     const closeEditModal = () => {
+        const formVar: HTMLFormElement = document.getElementById('edit-company-form') as HTMLFormElement;
+        formVar.reset();
         setShowEditModal(false);
     }
 
@@ -208,6 +239,32 @@ export default function Companies({updateRecords}: IProps): ReactElement {
             setName('');
         }
     }
+
+    const selectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        if (event.target.checked) {
+            setSelectedCompanies(companies.map(company => company.id));
+        } else {
+            setSelectedCompanies([]);
+        }
+
+        const checkboxes: NodeListOf<HTMLInputElement> | null = document.getElementsByName('row-check') as NodeListOf<HTMLInputElement>;
+        if(checkboxes) {
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = event.target.checked;
+            })
+        }
+    }
+
+    const selectThis = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedCompanies((prevState) => {
+            if (event.target.checked) {
+                return [...prevState, Number(event.target.value)];
+            } else {
+                return prevState.filter(id => id !== Number(event.target.value));
+            }
+        });
+    };
 
     function handleNameInput(event: React.ChangeEvent<HTMLInputElement>) {
         setName(event.target.value);
@@ -317,7 +374,7 @@ export default function Companies({updateRecords}: IProps): ReactElement {
             <table className="table table-hover">
                 <thead>
                 <tr>
-                    {/*<th><input type="checkbox" className="form-check-input" onChange={(event => {selectAll(event)})} /></th>*/}
+                    <th><input type="checkbox" className="form-check-input" onChange={(event => {selectAll(event)})} /></th>
                     <th>Název</th>
                     <th>Stát</th>
                     <th>Město</th>
@@ -330,17 +387,17 @@ export default function Companies({updateRecords}: IProps): ReactElement {
                     <th>DIČ</th>
                     <th>Ředitel</th>
                     <th>Poznámka</th>
-                    {/*<th className="d-flex flex-row justify-content-end">*/}
-                    {/*    <button disabled={selectedAccounts.length < 1} className="btn btn-light" onClick={deleteSelected}>*/}
-                    {/*        <img src={x} alt="Delete" width="24" height="24" />*/}
-                    {/*    </button>*/}
-                    {/*</th>*/}
+                    <th className="d-flex flex-row justify-content-end">
+                        <button disabled={selectedCompanies.length < 1} className="btn btn-light" onClick={deleteSelected}>
+                            <img src={x} alt="Delete" width="24" height="24" />
+                        </button>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 {companies?.map((company: TCompany) => (
                     <tr className="cursor-pointer" key={company.id}>
-                        {/*<td><input value={company.id} id="row-check" name="row-check" type="checkbox" className="form-check-input" onChange={(event) => {selectThis(event)}} /></td>*/}
+                        <td><input value={company.id} id="row-check" name="row-check" type="checkbox" className="form-check-input" onChange={(event) => {selectThis(event)}} /></td>
                         <td>{company.name}</td>
                         <td>{company.state}</td>
                         <td>{company.town}</td>
