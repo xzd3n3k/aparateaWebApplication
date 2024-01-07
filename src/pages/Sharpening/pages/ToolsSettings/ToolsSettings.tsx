@@ -1,33 +1,34 @@
 import React, {ReactElement, ReactNode, useEffect, useState} from "react";
+import api from "../../../../api";
+import TTool from "../../../../TTool";
 import {Modal} from "../../../../components";
 import {pencil, x} from "../../../../images";
-import TSharpeningCompany from "../../../../TSharpeningCompany";
-import api from "../../../../api";
 import {toast} from "react-toastify";
-
 
 interface IProps {
     updateRecords: boolean;
 }
 
-export default function SharpeningCompanies({updateRecords}: IProps): ReactElement {
+export default function ToolsSettings({updateRecords}: IProps): ReactElement {
 
-    const [sharpeningCompanies, setSharpeningCompanies] = useState(Array<TSharpeningCompany>);
+    const [tools, setTools] = useState(Array<TTool>);
 
     const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
 
-    const [selectedCompanies, setSelectedCompanies] = useState<number[]>([]);
-    const [selectedCompany, setSelectedCompany] = useState<TSharpeningCompany>();
-    const [selectedCompanyName, setSelectedCompanyName] = useState('');
-    const [selectedCompanyId, setSelectedCompanyId] = useState(0);
+    const [selectedTools, setSelectedTools] = useState<number[]>([]);
+    const [selectedTool, setSelectedTool] = useState<TTool>();
+    const [selectedToolName, setSelectedToolName] = useState<string>('');
+    const [selectedToolId, setSelectedToolId] = useState(0);
 
     const [name, setName] = useState<string>('');
+    const [price, setPrice] = useState<number>(-1);
+    const [discount, setDiscount] = useState<number>(-1);
     const [note, setNote] = useState<string>('');
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`${api}/sharpeningCompanies`, {
+            const response = await fetch(`${api}/tools`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -42,7 +43,7 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
             }
 
             const result = await response.json();
-            setSharpeningCompanies(result);
+            setTools(result);
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -53,10 +54,73 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
         fetchData();
     }, [updateRecords])
 
+    const openModal = (toolName: string, toolId: number) => {
+        setShowModal(true);
+        setSelectedToolName(toolName);
+        setSelectedToolId(toolId);
+    };
 
-    const deleteSharpeningCompany = async (id: number) => {
+    const closeModal = () => {
+        setShowModal(false);
+        setSelectedToolName('');
+    };
+
+    const confirmModal = () => {
+        deleteTool(selectedToolId);
+        toast.success(`Nástroj ${selectedToolName} úspěšně smazán`);
+        setShowModal(false);
+        setSelectedToolName('');
+        setSelectedToolId(0);
+    };
+
+    const openEdit = (tool: TTool) => {
+        setSelectedTool(tool);
+        setName(tool.name);
+
+        if (tool.note === null) {
+            setNote('');
+        } else {
+            setNote(tool.note);
+        }
+
+        if (tool.price === null) {
+            setPrice(-1);
+            setDiscount(-1);
+        } else {
+            setPrice(tool.price);
+            if (tool.discount === null) {
+                setDiscount(-1);
+            } else {
+                setDiscount(tool.discount);
+            }
+        }
+
+        setShowEditModal(true);
+    };
+
+    const closeEditModal = () => {
+        const formVar: HTMLFormElement = document.getElementById('edit-tool-form') as HTMLFormElement;
+        formVar.reset();
+        setShowEditModal(false);
+    }
+
+    const confirmEditModal = () => {
+        if  (selectedTool) {
+            editTool(selectedTool.id);
+            const formVar: HTMLFormElement = document.getElementById('edit-tool-form') as HTMLFormElement;
+            formVar.reset();
+            setShowEditModal(false);
+            setSelectedTool(undefined);
+            setName('');
+            setPrice(-1);
+            setDiscount(-1);
+            setNote('');
+        }
+    }
+
+    const deleteTool = async (id: number) => {
         try {
-            const response = await fetch(`${api}/deleteSharpeningCompany?identificator=${id}`, {
+            const response = await fetch(`${api}/deleteTool?identificator=${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -73,20 +137,20 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
             fetchData();
 
         } catch (error) {
-            console.error('Error deleting sharpening company:', error);
+            console.error('Error deleting tool:', error);
         }
     };
 
     const deleteSelected = async () => {
 
         try {
-            const response = await fetch(`${api}/deleteSharpeningCompanies`, {
+            const response = await fetch(`${api}/deleteTools`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(selectedCompanies)
+                body: JSON.stringify(selectedTools)
             });
 
             if (!response.ok) {
@@ -95,20 +159,20 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
                 }
                 return;
             } else {
-                setSelectedCompanies([]);
-                toast.success('Vybrané brusírny byly úspěšně smazány');
+                setSelectedTools([]);
+                toast.success('Vybrané nástroje byly úspěšně smazány');
             }
 
             fetchData();
 
         } catch (error) {
-            console.error('Error deleting sharpening companies:', error);
+            console.error('Error deleting tools:', error);
         }
     };
 
-    const editSharpeningCompany = async (id: number) => {
+    const editTool = async (id: number) => {
         try {
-            const response = await fetch(`${api}/editSharpeningCompany?identificator=${id}`, {
+            const response = await fetch(`${api}/editTool?identificator=${id}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -116,6 +180,8 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
                 },
                 body: JSON.stringify({
                     "name": name,
+                    "price": price,
+                    "discount": discount,
                     "note": note
                 }),
             });
@@ -128,7 +194,7 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
                     toast.error("Některá povinně vyplnitelná pole jsou nevyplněna!")
                 }
                 else if (response.status === 304) {
-                    toast.error("Tato brusírna již existuje!")
+                    toast.error("Tento nástroj již existuje!")
                 }
                 return;
             }
@@ -140,7 +206,7 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
                 } else if (result.status_code === 206) {
                     toast.error("Některá povinně vyplnitelná pole jsou nevyplněna!");
                 } else if (result.status_code === 304) {
-                    toast.error("Tato brusírna již existuje!")
+                    toast.error("Tento nástroj již existuje!")
                 } else {
                     toast.error(`Server odpověděl kódem: ${result.status_code}. Kontaktujte administrátora pro více informací.`);
                 }
@@ -151,66 +217,16 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
             fetchData();
 
         } catch (error) {
-            console.error('Error editing sharpening company:', error);
+            console.error('Error editing tool:', error);
         }
     };
-
-    const openModal = (companyName: string, companyId: number) => {
-        setShowModal(true);
-        setSelectedCompanyName(companyName);
-        setSelectedCompanyId(companyId);
-    };
-
-    const closeModal = () => {
-        setShowModal(false);
-        setSelectedCompanyName('');
-    };
-
-    const confirmModal = () => {
-        deleteSharpeningCompany(selectedCompanyId);
-        toast.success(`Brusírna ${selectedCompanyName} úspěšně smazána`);
-        setShowModal(false);
-        setSelectedCompanyName('');
-        setSelectedCompanyId(0);
-    };
-
-    const openEdit = (company: TSharpeningCompany) => {
-        setSelectedCompany(company);
-        setName(company.name);
-
-        if (company.note === null) {
-            setNote('');
-        } else {
-            setNote(company.note);
-        }
-
-        setShowEditModal(true);
-    };
-
-    const closeEditModal = () => {
-        const formVar: HTMLFormElement = document.getElementById('edit-sharpening-company-form') as HTMLFormElement;
-        formVar.reset();
-        setShowEditModal(false);
-    }
-
-    const confirmEditModal = () => {
-        if  (selectedCompany) {
-            editSharpeningCompany(selectedCompany.id);
-            const formVar: HTMLFormElement = document.getElementById('edit-sharpening-company-form') as HTMLFormElement;
-            formVar.reset();
-            setShowEditModal(false);
-            setSelectedCompany(undefined);
-            setName('');
-            setNote('');
-        }
-    }
 
     const selectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         if (event.target.checked) {
-            setSelectedCompanies(sharpeningCompanies.map(company => company.id));
+            setSelectedTools(tools.map(tool => tool.id));
         } else {
-            setSelectedCompanies([]);
+            setSelectedTools([]);
         }
 
         const checkboxes: NodeListOf<HTMLInputElement> | null = document.getElementsByName('row-check') as NodeListOf<HTMLInputElement>;
@@ -223,7 +239,7 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
 
 
     const selectThis = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedCompanies((prevState) => {
+        setSelectedTools((prevState) => {
             if (event.target.checked) {
                 return [...prevState, Number(event.target.value)];
             } else {
@@ -236,52 +252,82 @@ export default function SharpeningCompanies({updateRecords}: IProps): ReactEleme
         setName(event.target.value);
     }
 
+    function handlePriceInput(event: React.ChangeEvent<HTMLInputElement>) {
+        if (!event.target.value) {
+            setPrice(-1);
+        } else if (Number(event.target.value) < 0) {
+            event.target.value = "0";
+        } else {
+            setPrice(Number(event.target.value));
+        }
+    }
+
+    function handleDiscountInput(event: React.ChangeEvent<HTMLInputElement>) {
+        if (!event.target.value) {
+            setDiscount(-1);
+        } else if (Number(event.target.value) < 0) {
+            event.target.value = "0";
+        } else {
+            setDiscount(Number(event.target.value));
+        }
+    }
+
     function handleNoteInput(event: React.ChangeEvent<HTMLInputElement>) {
         setNote(event.target.value);
     }
 
-
     const btnBody: ReactNode =
-        <form id="edit-sharpening-company-form" className="d-flex flex-column gap-3">
+        <form id="edit-tool-form" className="d-flex flex-column gap-3">
             <div className="d-flex flex-column gap-1">
                 <label>Název</label>
-                <input defaultValue={selectedCompany?.name} onInput={handleNameInput} type="text" className="form-control" placeholder="Název" />
+                <input defaultValue={selectedTool?.name} onInput={handleNameInput} type="text" className="form-control" placeholder="Název" />
+            </div>
+            <div className="d-flex flex-column gap-1">
+                <label>Cena</label>
+                <input defaultValue={selectedTool?.price} onInput={handlePriceInput} className="form-control" type="number" min={0} placeholder="Cena (volitelné)" />
+            </div>
+            <div className="d-flex flex-column gap-1">
+                <label>Sleva</label>
+                <input defaultValue={selectedTool?.discount} onInput={handleDiscountInput} className="form-control" type="number" min={0} placeholder="Sleva (volitelné)" />
             </div>
             <div className="d-flex flex-column gap-1">
                 <label>Poznámka</label>
-                <input defaultValue={selectedCompany?.note} onInput={handleNoteInput} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
+                <input defaultValue={selectedTool?.note} onInput={handleNoteInput} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
             </div>
         </form>
 
-
     return (
         <div>
-            <Modal isOpen={showModal} handleClose={closeModal} handleConfirm={confirmModal} title="Smazat" body={<p>{`Opravdu si přejete smazat brusírnu ${selectedCompanyName}?`}</p>} confirmButtonText="Smazat" buttonColor="btn-danger" />
+            <Modal isOpen={showModal} handleClose={closeModal} handleConfirm={confirmModal} title="Smazat" body={<p>{`Opravdu si přejete smazat nástroj: ${selectedToolName}?`}</p>} confirmButtonText="Smazat" buttonColor="btn-danger" />
             <Modal isOpen={showEditModal} handleClose={closeEditModal} handleConfirm={confirmEditModal} title="Upravit" body={btnBody} confirmButtonText="Uložit" buttonColor="btn-primary" />
             <table className="table table-hover">
                 <thead>
                 <tr>
                     <th><input type="checkbox" className="form-check-input" onChange={(event => {selectAll(event)})} /></th>
                     <th>Název</th>
+                    <th>Cena (bez slevy)</th>
+                    <th>Sleva</th>
                     <th>Poznámka</th>
                     <th className="d-flex flex-row justify-content-end">
-                        <button disabled={selectedCompanies.length < 1} className="btn btn-light" onClick={deleteSelected}>
+                        <button disabled={tools.length < 1} className="btn btn-light" onClick={deleteSelected}>
                             <img src={x} alt="Delete" width="24" height="24" />
                         </button>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                {sharpeningCompanies?.map((company: TSharpeningCompany) => (
-                    <tr className="cursor-pointer" key={company.id}>
-                        <td><input value={company.id} id="row-check" name="row-check" type="checkbox" className="form-check-input" onChange={(event) => {selectThis(event)}} /></td>
-                        <td>{company.name}</td>
-                        <td>{company.note}</td>
+                {tools?.map((tool: TTool) => (
+                    <tr className="cursor-pointer" key={tool.id}>
+                        <td><input value={tool.id} id="row-check" name="row-check" type="checkbox" className="form-check-input" onChange={(event) => {selectThis(event)}} /></td>
+                        <td>{tool.name}</td>
+                        <td>{tool.price !== null ? tool.price + " Kč" : null}</td>
+                        <td>{tool.discount ? tool.discount + " %" : null}</td>
+                        <td>{tool.note}</td>
                         <td className="d-flex flex-row gap-3 justify-content-end">
-                            <button className="btn btn-light" onClick={() => {openEdit(company)}}>
+                            <button className="btn btn-light" onClick={() => {openEdit(tool)}}>
                                 <img src={pencil} alt="Edit" width="24" height="24" />
                             </button>
-                            <button className="btn btn-light" onClick={() => {openModal(company.name, company.id)}}>
+                            <button className="btn btn-light" onClick={() => {openModal(tool.name, tool.id)}}>
                                 <img src={x} alt="Delete" width="24" height="24" />
                             </button>
                         </td>

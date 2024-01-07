@@ -64,7 +64,7 @@ export default function Companies({updateRecords}: IProps): ReactElement {
 
     const deleteCompany = async (id: number) => {
         try {
-            const response = await fetch(`${api}/deleteCompany?id=${id}`, {
+            const response = await fetch(`${api}/deleteCompany?identificator=${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -116,7 +116,7 @@ export default function Companies({updateRecords}: IProps): ReactElement {
 
     const editCompany = async (id: number) => {
         try {
-            const response = await fetch(`${api}/editCompany?id=${id}`, {
+            const response = await fetch(`${api}/editCompany?identificator=${id}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,

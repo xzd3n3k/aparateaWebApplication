@@ -1,7 +1,7 @@
 import './Settings.scss';
 import React, {ReactElement, useState, ReactNode, useEffect} from "react";
 import { arrowLeft, plus } from "../../../../images";
-import {Accounts, Companies, SharpeningCompanies} from "../index";
+import {Accounts, Companies, SharpeningCompanies, ToolsSettings} from "../index";
 import { Modal } from "../../../../components";
 import { toast } from "react-toastify";
 import api from "../../../../api";
@@ -12,6 +12,7 @@ export default function Settings(): ReactElement {
     const [updateUsers, setUpdateUsers] = useState(false);
     const [updateSharpeningCompanies, setUpdateSharpeningCompanies] = useState(false);
     const [updateCompanies, setUpdateCompanies] = useState(false);
+    const [updateTools, setUpdateTools] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
     const [showCredentials, setShowCredentials] = useState(false);
@@ -30,6 +31,11 @@ export default function Settings(): ReactElement {
 
     const [name, setName] = useState<string>('');
     const [note, setNote] = useState<string>("");
+
+    const [toolName, setToolName] = useState<string>('');
+    const [toolPrice, setToolPrice] = useState<number>(-1);
+    const [toolDiscount, setToolDiscount] = useState<number>(-1);
+    const [toolNote, setToolNote] = useState<string>('');
 
     const [companyName, setCompanyName] = useState<string>('');
     const [companyEmail, setCompanyEmail] = useState<string>('');
@@ -192,26 +198,35 @@ export default function Settings(): ReactElement {
             </form>
         ) : selectedOption === "sharpeningCompanies" ? (
                 <form id="create-sharpening-company-form" className="d-flex flex-column gap-3">
-                    <input onChange={event => setName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Název" />
-                    <input onChange={event => setNote(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
+                    <input onChange={event => setName(event.target.value)} type="text" className="form-control" placeholder="Název" />
+                    <input onChange={event => setNote(event.target.value)} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
                 </form>
         ) : selectedOption === "customers" ? (
                 <form id="create-company-form" className="d-flex flex-column gap-3">
-                    <input onChange={event => setCompanyName(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Název" />
-                    <input onChange={event => setCompanyEmail(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Email" />
-                    <input onChange={event => setCompanyState(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Stát (volitelné)" />
-                    <input onChange={event => setCompanyTown(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Město (volitelné)" />
-                    <input onChange={event => setCompanyStreet(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Ulice (volitelné)" />
-                    <input onChange={event => setCompanyCisloPopisne(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="č.p (volitelné)" />
-                    <input onChange={event => setCompanyPsc(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="PSČ (volitelné)" />
-                    <input onChange={event => setCompanyPhone(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Mobil (volitelné)" />
-                    <input onChange={event => setCompanyIc(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="IČ (volitelné)" />
-                    <input onChange={event => setCompanyDic(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="DIČ (volitelné)" />
-                    <input onChange={event => setCompanyExecutive(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Ředitel (volitelné)" />
-                    <input onChange={event => setCompanyNote(event.target.value)} disabled={generateRandom} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
+                    <input onChange={event => setCompanyName(event.target.value)} type="text" className="form-control" placeholder="Název" />
+                    <input onChange={event => setCompanyEmail(event.target.value)} type="text" className="form-control" placeholder="Email" />
+                    <input onChange={event => setCompanyState(event.target.value)} type="text" className="form-control" placeholder="Stát (volitelné)" />
+                    <input onChange={event => setCompanyTown(event.target.value)} type="text" className="form-control" placeholder="Město (volitelné)" />
+                    <input onChange={event => setCompanyStreet(event.target.value)} type="text" className="form-control" placeholder="Ulice (volitelné)" />
+                    <input onChange={event => setCompanyCisloPopisne(event.target.value)} type="text" className="form-control" placeholder="č.p (volitelné)" />
+                    <input onChange={event => setCompanyPsc(event.target.value)} type="text" className="form-control" placeholder="PSČ (volitelné)" />
+                    <input onChange={event => setCompanyPhone(event.target.value)} type="text" className="form-control" placeholder="Mobil (volitelné)" />
+                    <input onChange={event => setCompanyIc(event.target.value)} type="text" className="form-control" placeholder="IČ (volitelné)" />
+                    <input onChange={event => setCompanyDic(event.target.value)} type="text" className="form-control" placeholder="DIČ (volitelné)" />
+                    <input onChange={event => setCompanyExecutive(event.target.value)} type="text" className="form-control" placeholder="Ředitel (volitelné)" />
+                    <input onChange={event => setCompanyNote(event.target.value)} type="text" className="form-control" placeholder="Poznámka (volitelné)" />
                 </form>
+            ) : selectedOption === "tools" ? (
+                <div>
+                    <form id="create-tool-form" className="d-flex flex-column gap-3">
+                        <input onChange={event => setToolName(event.target.value)} className="form-control" type="text" placeholder="Název" />
+                        <input onChange={event => { if(!event.target.value) {setToolPrice(-1)} else if(Number(event.target.value) < 0) {event.target.value = "0"} else {setToolPrice(Number(event.target.value))} }} className="form-control" type="number" min={0} placeholder="Cena (volitelné)" />
+                        <input onChange={event => { if(!event.target.value) {setToolDiscount(-1)} else if(Number(event.target.value) < 0) {event.target.value = "0"} else {setToolDiscount(Number(event.target.value))} }} className="form-control" type="number" min={0} placeholder="Sleva (volitelné)" />
+                        <input onChange={event => setToolNote(event.target.value)} className="form-control" type="text" placeholder="Poznámka (volitelné)" />
+                    </form>
+                </div>
             ) :
-            <div>ostatni</div>
+            <div>EMPTY</div>
     ;
 
 
@@ -277,6 +292,13 @@ export default function Settings(): ReactElement {
                             setShowCredentials(true);
                         }
                         setUpdateUsers(!updateUsers);
+                        setPassword('');
+                        setEmail('');
+                        setFirstName('');
+                        setLastName('');
+                        setUsername('');
+                        setPhone('');
+                        setCompanyId(0);
                         toast.success(`Uživatelský účet vytvořen`);
                     }
 
@@ -310,6 +332,8 @@ export default function Settings(): ReactElement {
 
                     } else {
                         setUpdateSharpeningCompanies(!updateSharpeningCompanies);
+                        setName('');
+                        setNote('');
                         toast.success("Brusírna úspěšně přidána");
                     }
 
@@ -353,6 +377,18 @@ export default function Settings(): ReactElement {
 
                     } else {
                         setUpdateCompanies(!updateCompanies);
+                        setCompanyName('');
+                        setCompanyEmail('');
+                        setCompanyState('');
+                        setCompanyTown('');
+                        setCompanyStreet('');
+                        setCompanyCisloPopisne('')
+                        setCompanyPsc('')
+                        setCompanyPhone('');
+                        setCompanyIc('');
+                        setCompanyDic('');
+                        setCompanyExecutive('');
+                        setCompanyNote('');
                         toast.success(`Zákazník úspěšně přidán`);
                     }
 
@@ -366,7 +402,42 @@ export default function Settings(): ReactElement {
                 setShowModal(false);
                 break;
             case "tools":
-                toast.success(`Nástroj úspěšně přidán`);
+                const toolResponse = await fetch(`${api}/createTool`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "name": toolName,
+                        "price": toolPrice,
+                        "discount": toolDiscount,
+                        "note": toolNote
+                    }),
+                });
+
+                const toolResult = await toolResponse.json();
+
+                if (toolResponse.status === 200) {
+                    if (toolResult === 'Tool already exists!') {
+                        toast.error('Nástroj již existuje!');
+
+                    } else {
+                        setUpdateTools(!updateTools);
+                        setToolName('');
+                        setToolPrice(-1);
+                        setToolDiscount(-1);
+                        setToolNote('');
+                        toast.success("Nástroj úspěšně přidán");
+                    }
+
+                } else if (toolResponse.status === 401) {
+                    window.location.href = "/sharpening/login";
+                } else {
+                    toast.error("Chyba při vytváření nástroje!");
+                }
+                const toolForm: HTMLFormElement = document.getElementById('create-tool-form') as HTMLFormElement;
+                toolForm.reset();
                 setShowModal(false);
                 break;
             case "orders":
@@ -387,7 +458,7 @@ export default function Settings(): ReactElement {
             case "customers":
                 return <Companies updateRecords={updateCompanies} />;
             case "tools":
-                return 'naradi';
+                return <ToolsSettings updateRecords={updateTools}/>;
             case "orders":
                 return 'objednavky';
             default:

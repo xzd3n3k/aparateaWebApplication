@@ -5,14 +5,17 @@ import { gear } from "../../../../images";
 import TSharpeningCompany from "../../../../TSharpeningCompany";
 import api from "../../../../api";
 import TCompany from "../../../../TCompany";
+import TTool from "../../../../TTool";
 
 
 export default function Records(): ReactElement {
 
     const [sharpeningCompanies, setSharpeningCompanies] = useState(Array<TSharpeningCompany>);
     const [companies, setCompanies] = useState(Array<TCompany>);
+    const [tools, setTools] = useState(Array<TTool>);
 
     const [menuIsOpen, setMenuIsOpen] = React.useState(false);
+    const [toolMenuIsOpen, setToolMenuIsOpen] = React.useState(false);
     //const filteredOptions = inputValue.trim() === '' ? staticOptions : options; TODO use this when show eg top first 5 records and when user starts typing show filtered all opts
 
 
@@ -64,9 +67,34 @@ export default function Records(): ReactElement {
         }
     };
 
+    const fetchTools = async () => {
+        try {
+            const response = await fetch(`${api}/tools`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = "/sharpening/login";
+                }
+                return;
+            }
+
+            const result = await response.json();
+            setTools(result);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
         fetchSharpeningCompanies();
         fetchCompanies();
+        fetchTools();
     }, [])
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -87,6 +115,11 @@ export default function Records(): ReactElement {
         value: company.id,
         label: company.name,
     }));
+
+    const transformedTools = tools.map(tool => ({
+        value: tool.id,
+        label: tool.name,
+    }))
 
     return (
         <div className="records-container p-4 gap-3 d-flex flex-column">
@@ -118,7 +151,16 @@ export default function Records(): ReactElement {
                     </span>
                     <span className="w-50">
                         <label>Nástroj</label>
-                        <Select options={options} placeholder="Vyberte..." noOptionsMessage={() => "Nenalezeno"} />
+                        <Select
+                            options={transformedTools}
+                            placeholder="Vyberte..."
+                            noOptionsMessage={() => "Nenalezeno"}
+                            menuIsOpen={toolMenuIsOpen}
+                            onInputChange={(inputValue, { action }) => {
+                                setToolMenuIsOpen(action === 'input-change' && inputValue.trim() !== '');
+                            }}
+                            onBlur={() => setToolMenuIsOpen(false)}
+                        />
                     </span>
                     <span className="w-25">
                         <label>Počet</label>

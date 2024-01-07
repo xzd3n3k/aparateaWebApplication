@@ -1,5 +1,5 @@
 import './Accounts.scss';
-import {ReactElement, ReactNode, useEffect, useReducer, useState} from "react";
+import {ReactElement, ReactNode, useEffect, useState} from "react";
 import api from "../../../../api";
 import TAccount from "../../../../TAccount";
 import { x, pencil } from "../../../../images";
@@ -35,6 +35,8 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
     const [phone, setPhone] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [companyId, setCompanyId] = useState<number>(0);
+
+    const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
 
     const fetchData = async () => {
         try {
@@ -92,7 +94,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
 
     const deleteUser = async (id: number) => {
         try {
-            const response = await fetch(`${api}/deleteUser?id=${id}`, {
+            const response = await fetch(`${api}/deleteUser?identificator=${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -144,7 +146,7 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
 
     const editUser = async (id: number) => {
         try {
-            const response = await fetch(`${api}/editUser?id=${id}`, {
+            const response = await fetch(`${api}/editUser?identificator=${id}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -359,6 +361,11 @@ export default function Accounts({updateUsers}: IProps): ReactElement {
                             ? { label: selectedAccount?.linked_company?.name, value: selectedAccount?.linked_company?.id }
                             : null
                     }
+                    menuIsOpen={menuIsOpen}
+                    onInputChange={(inputValue, { action }) => {
+                        setMenuIsOpen(action === 'input-change' && inputValue.trim() !== '');
+                    }}
+                    onBlur={() => setMenuIsOpen(false)}
                     noOptionsMessage={() => "Nenalezeno"}
                     isClearable={true}
                     onChange={handleCompanyIdInput}
