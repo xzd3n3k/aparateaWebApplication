@@ -4,6 +4,9 @@ type TOrder = {
     customer_id: number;
     tool_id: number;
     count: number;
+    date: string;
+    time: string;
+    status: string;
 };
 
 export default TOrder;
