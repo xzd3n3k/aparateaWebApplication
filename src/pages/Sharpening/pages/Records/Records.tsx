@@ -1,7 +1,7 @@
 import './Records.scss';
 import React, {ReactElement, useEffect, useState} from "react";
 import Select from 'react-select';
-import {gear, pencil, x} from "../../../../images";
+import {gear, pencil, x, check, arrowRight} from "../../../../images";
 import TSharpeningCompany from "../../../../TSharpeningCompany";
 import api from "../../../../api";
 import TCompany from "../../../../TCompany";
@@ -14,6 +14,8 @@ import {Modal} from "../../../../components";
 export default function Records(): ReactElement {
 
     const [orders, setOrders] = useState(Array<TOrder>)
+
+    const [selectKey, setSelectKey] = useState(0);
 
     const [sharpeningCompanies, setSharpeningCompanies] = useState(Array<TSharpeningCompany>);
     const [companies, setCompanies] = useState(Array<TCompany>);
@@ -169,6 +171,7 @@ export default function Records(): ReactElement {
 
         } catch (error) {
             console.error('Error creating order:', error);
+            return 'error';
         }
     };
 
@@ -182,7 +185,12 @@ export default function Records(): ReactElement {
         const nastrojInputValue = formData.get('nastroj-input') as string;
         const pocetInputValue = formData.get('pocet-input') as string;
 
-        createOrder(Number(brusirnaInputValue), Number(zakaznikInputValue), Number(nastrojInputValue), Number(pocetInputValue));
+        const order_created = await createOrder(Number(brusirnaInputValue), Number(zakaznikInputValue), Number(nastrojInputValue), Number(pocetInputValue));
+        if (order_created === 'error') {
+            toast.error('Nejsou vyplněna všechna pole!');
+        } else {
+            setSelectKey((prevKey) => prevKey + 1);
+        }
 
     }
 
@@ -200,6 +208,28 @@ export default function Records(): ReactElement {
         value: tool.id,
         label: tool.name,
     }))
+
+    function sortOrdersByColumn(orders: Array<TOrder>, columnName: string, direction: 'asc'|'desc') {
+
+        // return orders;
+        setOrders(prevOrders => {
+            return [...prevOrders].sort((a, b) => {
+                const valueA = String(a[columnName as keyof TOrder]).toLowerCase();
+                const valueB = String(b[columnName as keyof TOrder]).toLowerCase();
+
+                if (direction === 'asc') {
+                    return valueA.localeCompare(valueB);
+                } else if (direction === 'desc') {
+                    return valueB.localeCompare(valueA);
+                } else {
+                    throw new Error('Invalid sort direction');
+                }
+            });
+        });
+        console.log('Orders');
+        return;
+    }
+
 
     return (
         <div className="records-container p-4 gap-3 d-flex flex-column">
@@ -234,6 +264,8 @@ export default function Records(): ReactElement {
                     <span className="w-50">
                         <label>Nástroj</label>
                         <Select
+                            key={selectKey}
+                            isClearable={true}
                             name="nastroj-input"
                             options={transformedTools}
                             placeholder="Vyberte..."
@@ -247,12 +279,42 @@ export default function Records(): ReactElement {
                     </span>
                     <span className="w-25">
                         <label>Počet</label>
-                        <input name="pocet-input" type="number" className="form-control" min="1" defaultValue="1"/>
+                        <input key={selectKey} name="pocet-input" type="number" className="form-control" min="1" defaultValue="1"/>
                     </span>
                     <div className="d-flex flex-column justify-content-end">
                         <button type="submit" className="btn btn-light">Zapsat</button>
                     </div>
                 </form>
+            </div>
+
+            <div className="w-75 d-flex flex-row gap-3">
+                <Select
+                    name="brusirna-state-input"
+                    options={transformedSharpeningCompanies}
+                    placeholder="Brusírna..."
+                    noOptionsMessage={() => "Nenalezeno"}
+                    className="w-50"
+                />
+                <Select
+                    name="brusirna-state-input"
+                    options={[{label: "zadáno", value: "zadáno"}, {label: "převzato", value: "převzato"}, {label: "nabroušeno", value: "nabroušeno"}]}
+                    placeholder="Stav před..."
+                    noOptionsMessage={() => "Nenalezeno"}
+                    className="w-75"
+                />
+                <div className="d-flex flex-column justify-content-center">
+                    <img src={arrowRight} alt="Submit" width="24" height="24" />
+                </div>
+                <Select
+                    name="brusirna-state-input"
+                    options={[{label: "zadáno", value: "zadáno"}, {label: "převzato", value: "převzato"}, {label: "nabroušeno", value: "nabroušeno"}]}
+                    placeholder="Stav po..."
+                    noOptionsMessage={() => "Nenalezeno"}
+                    className="w-75"
+                />
+                <button className="btn btn-light" onClick={() => {console.log('change-state')}}>
+                    <img src={check} alt="Submit" width="24" height="24" />
+                </button>
             </div>
 
             <div>
@@ -262,10 +324,13 @@ export default function Records(): ReactElement {
                     <thead>
                     <tr>
                         {/*<th><input type="checkbox" className="form-check-input" onChange={(event => {selectAll(event)})} /></th>*/}
-                        <th>Brusírna</th>
-                        <th>Zákazník</th>
-                        <th>Nástroj</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'sharpening_id', 'desc')}} >Brusírna</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'customer_id', 'desc')}} >Zákazník</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'tool_id', 'desc')}} >Nástroj</th>
                         <th>Počet</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'id', 'desc')}} >Čas</th>
+                        <th>Datum</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'status', 'desc')}}>Stav</th>
                         <th className="d-flex flex-row justify-content-end">
                             {/*<button disabled={selectedCompanies.length < 1} className="btn btn-light" onClick={deleteSelected}>*/}
                             {/*    <img src={x} alt="Delete" width="24" height="24" />*/}
@@ -281,6 +346,9 @@ export default function Records(): ReactElement {
                             <td>{companies.find((company) => company.id === order.customer_id)?.name || 'N/A'}</td>
                             <td>{tools.find((tool) => tool.id === order.tool_id)?.name || 'N/A'}</td>
                             <td>{order.count}</td>
+                            <td>{order.time}</td>
+                            <td>{order.date}</td>
+                            <td>{order.status}</td>
                             <td className="d-flex flex-row gap-3 justify-content-end">
                                 {/*<button className="btn btn-light" onClick={() => {openEdit(company)}}>*/}
                                 {/*    <img src={pencil} alt="Edit" width="24" height="24" />*/}
