@@ -292,13 +292,6 @@ export default function Settings(): ReactElement {
                             setShowCredentials(true);
                         }
                         setUpdateUsers(!updateUsers);
-                        setPassword('');
-                        setEmail('');
-                        setFirstName('');
-                        setLastName('');
-                        setUsername('');
-                        setPhone('');
-                        setCompanyId(0);
                         toast.success(`Uživatelský účet vytvořen`);
                     }
 
@@ -469,7 +462,7 @@ export default function Settings(): ReactElement {
     return (
         <div className="settings-container d-flex flex-column w-100 p-4 gap-3">
             <Modal isOpen={showModal} handleClose={closeModal} handleConfirm={confirmModal} title={title} body={btnBody} confirmButtonText={btnText} buttonColor="btn-primary" />
-            <Modal isOpen={showCredentials} handleClose={() => {setShowCredentials(false)}} handleConfirm={() => {setShowCredentials(false)}} title="Údaje k účtu" body={credentialsBody} confirmButtonText="OK" buttonColor="visually-hidden"/>
+            <Modal isOpen={showCredentials} handleClose={() => {setShowCredentials(false); setPassword(''); setEmail(''); setFirstName(''); setLastName(''); setUsername(''); setPhone(''); setCompanyId(0);}} handleConfirm={() => {setShowCredentials(false)}} title="Údaje k účtu" body={credentialsBody} confirmButtonText="OK" buttonColor="visually-hidden"/>
             <div className="d-flex flex-row justify-content-between">
             <button className="btn btn-light" onClick={() => {window.location.href="/sharpening/records"}}>
                 <img src={arrowLeft} alt="Back" width="24" height="24" />
