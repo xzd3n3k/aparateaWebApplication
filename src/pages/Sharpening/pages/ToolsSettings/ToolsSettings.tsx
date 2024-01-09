@@ -309,7 +309,7 @@ export default function ToolsSettings({updateRecords}: IProps): ReactElement {
                     <th>Sleva</th>
                     <th>Poznámka</th>
                     <th className="d-flex flex-row justify-content-end">
-                        <button disabled={tools.length < 1} className="btn btn-light" onClick={deleteSelected}>
+                        <button disabled={selectedTools.length < 1} className="btn btn-light" onClick={deleteSelected}>
                             <img src={x} alt="Delete" width="24" height="24" />
                         </button>
                     </th>
