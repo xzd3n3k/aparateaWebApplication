@@ -7,6 +7,7 @@ type TOrder = {
     date: string;
     time: string;
     status: string;
+    note: string;
 };
 
 export default TOrder;
