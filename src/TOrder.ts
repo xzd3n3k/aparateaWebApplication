@@ -8,6 +8,9 @@ type TOrder = {
     time: string;
     status: string;
     note: string;
+    sharpening_name?: string;
+    tool_name?: string;
+    customer_name?: string;
 };
 
 export default TOrder;

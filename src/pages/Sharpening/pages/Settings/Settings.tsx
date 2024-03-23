@@ -1,7 +1,7 @@
 import './Settings.scss';
 import React, {ReactElement, useState, ReactNode, useEffect} from "react";
 import { arrowLeft, plus } from "../../../../images";
-import {Accounts, Companies, SharpeningCompanies, ToolsSettings} from "../index";
+import {Accounts, Companies, OrdersTables, SharpeningCompanies, ToolsSettings} from "../index";
 import { Modal } from "../../../../components";
 import { toast } from "react-toastify";
 import api from "../../../../api";
@@ -453,7 +453,7 @@ export default function Settings(): ReactElement {
             case "tools":
                 return <ToolsSettings updateRecords={updateTools}/>;
             case "orders":
-                return 'objednavky';
+                return <OrdersTables />;
             default:
                 return null;
         }
@@ -485,7 +485,7 @@ export default function Settings(): ReactElement {
                 <input type="radio" name="option" className="btn-check" id="btncheck4" autoComplete="off" onChange={() => setSelectedOption("tools")} />
                 <label className="btn btn-outline-primary" htmlFor="btncheck4">Nástroje</label>
 
-                <input type="radio" name="option" className="btn-check" id="btncheck5" autoComplete="off" onChange={() => setSelectedOption("orders")} disabled/>
+                <input type="radio" name="option" className="btn-check" id="btncheck5" autoComplete="off" onChange={() => setSelectedOption("orders")} />
                 <label className="btn btn-outline-primary" htmlFor="btncheck5">Objednávky</label>
             </div>
             {renderComponent()}

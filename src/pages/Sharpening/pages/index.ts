@@ -5,3 +5,4 @@ export { default as Accounts } from './Accounts/Accounts';
 export { default as SharpeningCompanies } from './SharpeningCompanies/SharpeningCompanies';
 export { default as Companies} from './Companies/Companies';
 export { default as ToolsSettings } from './ToolsSettings/ToolsSettings';
+export { default as OrdersTables } from './OrdersTables/OrdersTables';

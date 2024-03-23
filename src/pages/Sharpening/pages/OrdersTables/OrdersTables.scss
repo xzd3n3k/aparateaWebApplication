@@ -1,0 +1,22 @@
+.orders-tables {
+
+  .print-button {
+    display: inline-flex;
+    width: 100% !important;
+    justify-content: flex-end;
+  }
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .order-link {
+    max-width: 15%;
+    text-align: left;
+    cursor: pointer;
+    &:hover {
+      background: var(--theme-color-secondary-light-grey);
+    }
+  }
+
+}

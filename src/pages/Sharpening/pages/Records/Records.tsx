@@ -486,6 +486,8 @@ export default function Records(): ReactElement {
             <div>
                 <Modal isOpen={showModal} handleClose={closeModal} handleConfirm={confirmModal} title="Smazat" body={<p>{`Opravdu si přejete smazat objednávku?`}</p>} confirmButtonText="Smazat" buttonColor="btn-danger" />
                 {/*<Modal isOpen={showEditModal} handleClose={closeEditModal} handleConfirm={confirmEditModal} title="Upravit" body={btnBody} confirmButtonText="Uložit" buttonColor="btn-primary" />*/}
+                {orders?.filter((order: TOrder) => order.status === 'zadáno').length > 0 ? <span className="section-title">ZADÁNO</span> : null}
+                {orders?.filter((order: TOrder) => order.status === 'zadáno').length > 0 ?
                 <table className="table table-hover">
                     <thead>
                     <tr>
@@ -506,7 +508,8 @@ export default function Records(): ReactElement {
                     </tr>
                     </thead>
                     <tbody>
-                    {orders?.map((order: TOrder) => (
+                    {orders?.filter((order: TOrder) => order.status === 'zadáno')
+                    .map((order: TOrder) => (
                         <tr className="cursor-pointer" key={order.id}>
                             <td><input value={order.id} id="row-check" name="row-check" type="checkbox" className="form-check-input" onChange={(event) => {selectThis(event)}} /></td>
                             <td>{sharpeningCompanies.find((company) => company.id === order.sharpening_id)?.name || 'N/A'}</td>
@@ -529,6 +532,101 @@ export default function Records(): ReactElement {
                     ))}
                     </tbody>
                 </table>
+                    : null }
+                {orders?.filter((order: TOrder) => order.status === 'převzato').length > 0 ? <span className="section-title">PŘEVZATO</span> : null}
+                {orders?.filter((order: TOrder) => order.status === 'převzato').length > 0 ?
+                <table className="table table-hover">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" className="form-check-input" onChange={(event => {selectAll(event)})} /></th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'sharpening_id', 'desc')}} >Brusírna</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'customer_id', 'desc')}} >Zákazník</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'tool_id', 'desc')}} >Nástroj</th>
+                        <th>Počet</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'id', 'desc')}} >Čas</th>
+                        <th>Datum</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'status', 'desc')}}>Stav</th>
+                        <th>Poznámka</th>
+                        <th className="d-flex flex-row justify-content-end">
+                            <button disabled={selectedOrders.length < 1} className="btn btn-light" onClick={deleteSelected}>
+                                <img src={x} alt="Delete" width="24" height="24" />
+                            </button>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {orders?.filter((order: TOrder) => order.status === 'převzato')
+                        .map((order: TOrder) => (
+                            <tr className="cursor-pointer" key={order.id}>
+                                <td><input value={order.id} id="row-check" name="row-check" type="checkbox" className="form-check-input" onChange={(event) => {selectThis(event)}} /></td>
+                                <td>{sharpeningCompanies.find((company) => company.id === order.sharpening_id)?.name || 'N/A'}</td>
+                                <td>{companies.find((company) => company.id === order.customer_id)?.name || 'N/A'}</td>
+                                <td>{tools.find((tool) => tool.id === order.tool_id)?.name || 'N/A'}</td>
+                                <td>{order.count}</td>
+                                <td>{order.time}</td>
+                                <td>{order.date}</td>
+                                <td>{order.status}</td>
+                                <td>{order.note}</td>
+                                <td className="d-flex flex-row gap-3 justify-content-end">
+                                    <button disabled={true} className="btn btn-light opacity-25" onClick={() => {console.log('edit')}}>
+                                        <img src={pencil} alt="Edit" width="24" height="24" />
+                                    </button>
+                                    <button className="btn btn-light" onClick={() => {openModal(order.id)}}>
+                                        <img src={x} alt="Delete" width="24" height="24" />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                : null }
+                {orders?.filter((order: TOrder) => order.status === 'nabroušeno').length > 0 ? <span className="section-title">NABROUŠENO</span> : null}
+                {orders?.filter((order: TOrder) => order.status === 'nabroušeno').length > 0 ?
+                <table className="table table-hover">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" className="form-check-input" onChange={(event => {selectAll(event)})} /></th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'sharpening_id', 'desc')}} >Brusírna</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'customer_id', 'desc')}} >Zákazník</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'tool_id', 'desc')}} >Nástroj</th>
+                        <th>Počet</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'id', 'desc')}} >Čas</th>
+                        <th>Datum</th>
+                        <th className="cursor-pointer" onClick={() => {sortOrdersByColumn(orders, 'status', 'desc')}}>Stav</th>
+                        <th>Poznámka</th>
+                        <th className="d-flex flex-row justify-content-end">
+                            <button disabled={selectedOrders.length < 1} className="btn btn-light" onClick={deleteSelected}>
+                                <img src={x} alt="Delete" width="24" height="24" />
+                            </button>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {orders?.filter((order: TOrder) => order.status === 'nabroušeno')
+                        .map((order: TOrder) => (
+                            <tr className="cursor-pointer" key={order.id}>
+                                <td><input value={order.id} id="row-check" name="row-check" type="checkbox" className="form-check-input" onChange={(event) => {selectThis(event)}} /></td>
+                                <td>{sharpeningCompanies.find((company) => company.id === order.sharpening_id)?.name || 'N/A'}</td>
+                                <td>{companies.find((company) => company.id === order.customer_id)?.name || 'N/A'}</td>
+                                <td>{tools.find((tool) => tool.id === order.tool_id)?.name || 'N/A'}</td>
+                                <td>{order.count}</td>
+                                <td>{order.time}</td>
+                                <td>{order.date}</td>
+                                <td>{order.status}</td>
+                                <td>{order.note}</td>
+                                <td className="d-flex flex-row gap-3 justify-content-end">
+                                    <button disabled={true} className="btn btn-light opacity-25" onClick={() => {console.log('edit')}}>
+                                        <img src={pencil} alt="Edit" width="24" height="24" />
+                                    </button>
+                                    <button className="btn btn-light" onClick={() => {openModal(order.id)}}>
+                                        <img src={x} alt="Delete" width="24" height="24" />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                    : null }
             </div>
 
         </div>

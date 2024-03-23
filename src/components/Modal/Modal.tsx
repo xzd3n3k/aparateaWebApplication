@@ -1,3 +1,4 @@
+import './Modal.scss';
 import React, {ReactNode} from 'react';
 
 interface IProps {
@@ -8,11 +9,12 @@ interface IProps {
     body: ReactNode;
     confirmButtonText: string;
     buttonColor: 'btn-primary' | 'btn-danger' | 'btn-success' | 'btn-secondary' | 'visually-hidden';
+    fullscreen?: boolean;
 }
 
-const Modal = ({ isOpen, handleClose, handleConfirm, title, body, confirmButtonText, buttonColor }: IProps) => {
+const Modal = ({ isOpen, handleClose, handleConfirm, title, body, confirmButtonText, buttonColor, fullscreen }: IProps) => {
     return (
-        <div className={`modal ${isOpen ? 'show' : ''}`} tabIndex={-1} role="dialog" style={{ display: isOpen ? 'block' : 'none' }}>
+        <div className={`modal ${isOpen ? 'show' : ''} ${fullscreen ? 'fullscreen-size' : ''}`} tabIndex={-1} role="dialog" style={{ display: isOpen ? 'block' : 'none'}}>
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
